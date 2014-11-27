@@ -31,9 +31,9 @@ public class XboxControllerMap {
     
     
     ////AXES\\\\
-    private static final int AXIS_LEFT_X = 1;
-    private static final int AXIS_LEFT_Y = 2;
-    private static final int AXIS_TRIGGER = 3; //return value of right(RT) - left(LT)
-    private static final int AXIS_RIGHT_X = 4;
-    private static final int AXIS_RIGHT_Y = 5;
+    public static final int AXIS_LEFT_X = 1;
+    public static final int AXIS_LEFT_Y = 2;
+    public static final int AXIS_TRIGGER = 3; //return value of right(RT) - left(LT)
+    public static final int AXIS_RIGHT_X = 4;
+    public static final int AXIS_RIGHT_Y = 5;
 }
