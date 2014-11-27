@@ -34,11 +34,11 @@ public class XboxController extends GenericHID{
     return Controller.getRawButton(XboxControllerMap.BUTTON_B);
   } 
   
-  public boolean getX() {
+  public boolean getXBut() {
     return Controller.getRawButton(XboxControllerMap.BUTTON_X);
   } 
   
-  public boolean getY() {
+  public boolean getYBut() {
     return Controller.getRawButton(XboxControllerMap.BUTTON_Y);
   } 
   
