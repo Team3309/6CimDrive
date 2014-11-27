@@ -1,11 +1,26 @@
 
 public class modifiedGyro {
   
-  public initGyro() {
-    result = new AccumulatorResult();
-    if (m_analog == null) {
-      System.out.println("Null m_analog");
+  static final int kOversampleBits = 10;
+  static final int kAverageBits = 0;
+  static final double kSamplesPerSecond = 50.0;
+  static final double kCalibrationSampleTime = 5.0;
+  static final double kDefaultVoltsPerDegreePerSecond = 0.007;
+  AnalogChannel m_analog;
+  double m_voltsPerDegreePerSecond;
+  double m_offset;
+  boolean m_channelAllocated;
+  AccumulatorResult result;
+  //can use m_voltsPerDefreePerSecond to scale and set a sensitevity, none is used right now so it will juse equal the default (.007)
+  
+   public SuperGyro(int port){
+      m_analog = new AnalogChannel(port);
+      initGyro();
     }
+  
+  public void initGyro() {
+    result = new AccumulatorResult();
+    
     m_voltsPerDegreePerSecond = kDefaultVoltsPerDegreePerSecond;
     m_analog.setAverageBits(kAverageBits);
     m_analog.setOversampleBits(kOversampleBits);
@@ -28,4 +43,26 @@ public class modifiedGyro {
     m_analog.setAccumulatorDeadband(0); ///< TODO: compute / parameterize this
     m_analog.resetAccumulator();
   }
+  
+   public double getAngle() {
+    if (m_analog == null) {
+      return 0.0;
+    } else {
+      m_analog.getAccumulatorOutput(result);
+
+      long value = result.value - (long) (result.count * m_offset);
+
+      double scaledValue = value * 1e-9 * m_analog.getLSBWeight() * (1 << m_analog.getAverageBits()) /
+              (m_analog.getModule().getSampleRate() * m_voltsPerDegreePerSecond);
+
+      return scaledValue;
+    }
+  }
+  
+      public double getAngularRateOfChange(){
+        double rate = (m_analog.getVoltage() - m_offset) / m_VoltsPerDegreePerSecond; 
+        return rate;
+    }
+  
+  
 }
