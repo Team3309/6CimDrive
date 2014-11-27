@@ -1,4 +1,8 @@
 
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
+
+
 
  /**
     Summary of methods used:
@@ -103,10 +107,10 @@ public class XboxController extends GenericHID{
      return scaledVal;
   }
   //Not really sure what this return, I read somewhere that it returns rightTrigger - leftTrigger where each trigger returns from 0 to 1
-  public double getTrigger() {
+  public double getTriggers() {
     double temp = Controller.getRawAxis(XboxControllerMap.AXIS_TRIGGER);
     double scaledVal = scaleAxis(temp);
-    eturn scaledVal;
+    return scaledVal;
   }
   //Returns from -1 to 1
   public double getRightX() {
@@ -125,7 +129,7 @@ public class XboxController extends GenericHID{
   static final double DEADBAND = .1;
   
   //here is the scaling method used in axes
-  private double scaleAxes(double value) {
+  private double scaleAxis(double value) {
     //if the joystick is not pressed enough, don't move.  We dont like crawling spider robots.
     if(Math.abs(value) < DEADBAND) {
       return 0;
@@ -133,6 +137,62 @@ public class XboxController extends GenericHID{
     //this spot would be where you could scale stuff
     return value;
   }
+  
+  //required to work
+   public double getX(Hand hand) {
+        if(hand.equals(Hand.kLeft))
+            return getLeftX();
+        else
+            return getRightX();
+    }
+
+    public double getY(Hand hand) {
+        if(hand.equals(Hand.kLeft))
+            return getLeftY();
+        else
+            return getRightY();
+    }
+
+    public double getZ(Hand hand) {
+        if(hand.equals(Hand.kLeft))
+            return 0;
+        else
+            return getTriggers();
+    }
+
+    public double getTwist() {
+        return 0;
+    }
+
+    public double getThrottle() {
+        return 0;
+    }
+
+    public double getRawAxis(int i) {
+        return Controller.getRawAxis(i);
+    }
+
+    public boolean getTrigger(Hand hand) {
+        if(hand.equals(Hand.kLeft))
+            return getLB();
+        else
+            return getRB();
+    }
+
+    public boolean getTop(Hand hand) {
+        return false;
+    }
+
+    public boolean getBumper(Hand hand) {
+        if(hand.equals(Hand.kLeft))
+            return getLB();
+        else
+            return getRB();
+    }
+
+    public boolean getRawButton(int i) {
+        return Controller.getRawButton(i);
+    }
   
 }//END OF CLASS
   
