@@ -1,4 +1,7 @@
 
+import edu.wpi.first.wpilibj.Victor;
+
+
 public class Drive {
   private Victor left1;
   private Victor left2;
