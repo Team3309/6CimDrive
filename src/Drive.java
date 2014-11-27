@@ -12,6 +12,8 @@ public class Drive {
   private Encoder leftEncoder;
   private Encoder rightEncoder;
   
+  private modifiedGyro gyro;
+  
   public Drive() {
     //initialize Victors
     left1 = new Victor(RobotMap.DRIVE_LEFT_1);
@@ -38,5 +40,18 @@ public class Drive {
   private void setRight(double val) {
     right1.set(val);
     right2.set(val);
+  }
+  
+  //this class takes care of PIDSource and PIDOutput, IN ONE CLASS OMG
+  private class StraightPID implements PIDSource, PIDOutput {
+    public double pidGet() {
+     return (leftEncoder.get() + rightEncoder.get()) / 2;
+    }
+
+    public void pidWrite(double d) {
+     if(straightPidEnabled){
+        drive(d, 0);
+      }
+    }
   }
 }
