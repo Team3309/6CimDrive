@@ -1,4 +1,9 @@
 
+import edu.wpi.first.wpilibj.AccumulatorResult;
+import edu.wpi.first.wpilibj.AnalogChannel;
+import edu.wpi.first.wpilibj.Timer;
+
+//hhj
 public class modifiedGyro {
   
   static final int kOversampleBits = 10;
@@ -13,7 +18,7 @@ public class modifiedGyro {
   AccumulatorResult result;
   //can use m_voltsPerDefreePerSecond to scale and set a sensitevity, none is used right now so it will juse equal the default (.007)
   
-   public SuperGyro(int port){
+   public modifiedGyro(int port){
       m_analog = new AnalogChannel(port);
       initGyro();
     }
@@ -60,7 +65,7 @@ public class modifiedGyro {
   }
   
       public double getAngularRateOfChange(){
-        double rate = (m_analog.getVoltage() - m_offset) / m_VoltsPerDegreePerSecond; 
+        double rate = (m_analog.getVoltage() - m_offset) / m_voltsPerDegreePerSecond; 
         return rate;
     }
   
