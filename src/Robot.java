@@ -44,7 +44,7 @@ public class Robot extends IterativeRobot {
 
     //Init to Tele
     public void teleopInit() {
-
+        mDrive.resetGyro();
     }
 
     //This function is called periodically during operator control
