@@ -8,48 +8,51 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-
 public class Robot extends IterativeRobot {
-	
-	private Scheduler scheduler;
 
-  //Runs when Robot is turned on
-	public void robotInit() {
-		scheduler = Scheduler.getInstance();
-                //make drive
-                Drive mDrive = new Drive();
-	}
+    XboxController driverController = new XboxController(1);
+    XboxController operatorController = new XboxController(2);
 
-  //When first put into disabled mode
-	public void disabledInit() {
-	  
-	}
-	
-	//Called repeatedly in disabled mode
-	public void disabledPeriodic() {
-	
-	}
-	
-  //Init to Auto
-	public void autonomousInit() {
-	
-	}
+    private Scheduler scheduler;
+    Drive mDrive;
+    //Runs when Robot is turned on
+    public void robotInit() {
+        scheduler = Scheduler.getInstance();
+        //make drive
+        mDrive = new Drive();
+    }
 
-	
-	//This function is called periodically during autonomous
-	public void autonomousPeriodic() {
-		scheduler.run();
-	}
+    //When first put into disabled mode
+    public void disabledInit() {
 
-  //Init to Tele
-	public void teleopInit() {
-		
-	}
+    }
 
-	
-	//This function is called periodically during operator control
-	public void teleopPeriodic() {
-		scheduler.run();
-		
-	}
+    //Called repeatedly in disabled mode
+    public void disabledPeriodic() {
+
+    }
+
+    //Init to Auto
+    public void autonomousInit() {
+
+    }
+
+    //This function is called periodically during autonomous
+    public void autonomousPeriodic() {
+        scheduler.run();
+    }
+
+    //Init to Tele
+    public void teleopInit() {
+
+    }
+
+    //This function is called periodically during operator control
+    public void teleopPeriodic() {
+        scheduler.run();
+        
+        //gets all 4 axis from driver remote and depending on what drive the robot is in, the values will be used accordingly
+        mDrive.drive(driverController.getLeftX(), driverController.getLeftY(), driverController.getRightX(), driverController.getRightY());
+               	
+    }
 }
