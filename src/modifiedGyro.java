@@ -69,6 +69,7 @@ public class modifiedGyro {
         return rate;
     }
     
+    //called when drift becomes too much
     public void reset() {
         m_offset = m_analog.getVoltage();
         m_analog.resetAccumulator();
