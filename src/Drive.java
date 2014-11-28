@@ -133,6 +133,10 @@ public class Drive {
         tankDriveEnabled = false;
         haloDriveEnabled = true;
     }
+    
+    public void resetGyro() {
+        gyro.reset();
+    }
     //enable this is you ever want to go just forward
     boolean straightPidEnabled = false;
 
