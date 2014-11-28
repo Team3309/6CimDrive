@@ -23,7 +23,7 @@ public class modifiedGyro {
         initGyro();
     }
 
-    public void initGyro() {
+    private void initGyro() {
         result = new AccumulatorResult();
 
         m_voltsPerDegreePerSecond = kDefaultVoltsPerDegreePerSecond;
@@ -67,6 +67,11 @@ public class modifiedGyro {
     public double getAngularRateOfChange() {
         double rate = (m_analog.getVoltage() - m_offset) / m_voltsPerDegreePerSecond;
         return rate;
+    }
+    
+    public void reset() {
+        m_offset = m_analog.getVoltage();
+        m_analog.resetAccumulator();
     }
 
 }
