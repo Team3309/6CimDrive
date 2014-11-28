@@ -18,6 +18,10 @@ public class Drive {
     private Encoder leftEncoder;
     private Encoder rightEncoder;
     private modifiedGyro gyro;
+    
+    //all the booleans for which drive is being used
+    boolean haloDriveEnabled = true;
+    boolean tankDriveEnabled = false;
 
     //the constructor
     public Drive() {
@@ -87,13 +91,25 @@ public class Drive {
         return 0;
     }
 
+    //Tank drive works as so:
+    //left joystick controls left side,
+    //right joystick controls right side
+    //simple and easy
     public void driveTank(double leftY, double rightY) {
         setLeft(leftY);
         setRight(rightY);
     }
 
     public void drive(double leftX, double leftY, double rightX, double rightY) {
-
+        if(haloDriveEnabled) {
+            driveHalo(leftY, rightX);
+        }else if(tankDriveEnabled) {
+            driveTank(leftY, rightY);
+        }else {
+            //if not drive is enabled, enable halo as default drive
+            haloDriveEnabled = true;
+            tankDriveEnabled = false;
+        }
     }
 
     private void setLeft(double val) {
@@ -107,11 +123,12 @@ public class Drive {
         right2.set(val);
         right3.set(val);
     }
-
+    
+    //enable this is you ever want to go just forward
     boolean straightPidEnabled = false;
 
     //this class takes care of PIDSource and PIDOutput, IN ONE CLASS OMG, and this straightPID fun is for autonomous only, so it will be unused until autonomous
-
+    //ignore until later
     private class StraightPID implements PIDSource, PIDOutput {
 
         public double pidGet() {
