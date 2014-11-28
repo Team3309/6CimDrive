@@ -54,11 +54,18 @@ public class Robot extends IterativeRobot {
         //gets all 4 axis from driver remote and depending on what drive the robot is in, the values will be used accordingly
         mDrive.drive(driverController.getLeftX(), driverController.getLeftY(), driverController.getRightX(), driverController.getRightY());
         
+        //changes drive
         if(driverController.getLB()) {
             mDrive.setTankDrive();
         }else {
             mDrive.setHaloDrive();
         }
-               	
+              
+        //changes the solenoid on and off for driveshifter
+        if(driverController.getRB()) {
+            mDrive.setDriveshifter(true);
+        }else {
+            mDrive.setDriveshifter(false);
+        }
     }
 }
