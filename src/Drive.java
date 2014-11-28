@@ -3,6 +3,7 @@ import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Victor;
 
 public class Drive {
@@ -18,6 +19,7 @@ public class Drive {
     private Encoder leftEncoder;
     private Encoder rightEncoder;
     private modifiedGyro gyro;
+    private Solenoid driveShifter;
     
     //all the booleans for which drive is being used
     boolean haloDriveEnabled = true;
@@ -32,6 +34,8 @@ public class Drive {
         right1 = new Victor(RobotMap.DRIVE_RIGHT_1);
         right2 = new Victor(RobotMap.DRIVE_RIGHT_2);
         right3 = new Victor(RobotMap.DRIVE_RIGHT_3);
+        
+        driveShifter = new Solenoid(RobotMap.DRIVE_DRIVESHIFTER);
 
         //initialize Encoders
         leftEncoder = new Encoder(RobotMap.DRIVE_ENCODER_LEFT_A, RobotMap.DRIVE_ENCODER_LEFT_B, true, CounterBase.EncodingType.k1X);
@@ -75,7 +79,8 @@ public class Drive {
         double left = t_left + skim(t_right);
         double right = t_right + skim(t_left);
 
-        setLeft(left);
+        //negative because Vinnie did it
+        setLeft(-left);
         setRight(right);
     }
     
@@ -136,6 +141,11 @@ public class Drive {
     
     public void resetGyro() {
         gyro.reset();
+    }
+    
+    //turns the solenoid on and off
+    public void setDriveshifter(boolean b) {
+        driveShifter.set(b);
     }
     //enable this is you ever want to go just forward
     boolean straightPidEnabled = false;
