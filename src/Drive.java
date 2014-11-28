@@ -38,7 +38,15 @@ public class Drive {
   boolean gyroEnabled = false;
   
   public void driveHalo(double throttle, double turn) {
-    
+    if(gyroEnabled) {
+          if (Math.abs(throttle) < THRESHOLD && Math.abs(turn) < THRESHOLD) {
+              //if ther joystick is not pressed enough, immeaditely stop, don't even do the math
+              return;
+          }
+          
+          double currentAngularRateOfChange = gyro.getAngularRateOfChange();
+          double desiredAngularRateOfChange = turn * MAX_ANGULAR_VELOCITY;
+      }
     
   }
   
@@ -47,11 +55,7 @@ public class Drive {
   }
   
   public void drive(double throttle, double turn) {
-      if(gyroEnabled) {
-          if (Math.abs(throttle) < THRESHOLD && Math.abs(turn) < THRESHOLD) {
-              
-          }
-      }
+      
   }
   private void setLeft(double val) {
     left1.set(val);
