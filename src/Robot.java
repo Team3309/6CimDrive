@@ -1,4 +1,3 @@
-package org.team3309.Arrow;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -17,6 +16,8 @@ public class Robot extends IterativeRobot {
   //Runs when Robot is turned on
 	public void robotInit() {
 		scheduler = Scheduler.getInstance();
+                //make drive
+                Drive mDrive = new Drive();
 	}
 
   //When first put into disabled mode
