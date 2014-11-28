@@ -13,4 +13,6 @@ public class RobotMap {
     public static final int DRIVE_ENCODER_RIGHT_B   = 4;
     
     public static final int DRIVE_GYRO = 1;
+    
+    public static final int DRIVE_DRIVESHIFTER = 1;
 }
