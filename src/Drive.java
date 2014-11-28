@@ -124,6 +124,15 @@ public class Drive {
         right3.set(val);
     }
     
+    public void setTankDrive() {
+        tankDriveEnabled = true;
+        haloDriveEnabled = false;
+    }
+    
+    public void setHaloDrive() {
+        tankDriveEnabled = false;
+        haloDriveEnabled = true;
+    }
     //enable this is you ever want to go just forward
     boolean straightPidEnabled = false;
 
