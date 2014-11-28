@@ -38,7 +38,7 @@ public class Drive {
         rightEncoder = new Encoder(RobotMap.DRIVE_ENCODER_RIGHT_A, RobotMap.DRIVE_ENCODER_RIGHT_B, false, CounterBase.EncodingType.k1X);
 
         //initialize gyro
-        modifiedGyro gyro = new modifiedGyro(RobotMap.DRIVE_GYRO);
+       gyro = new modifiedGyro(RobotMap.DRIVE_GYRO);
 
     }
 
