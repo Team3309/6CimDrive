@@ -40,7 +40,8 @@ public class Drive {
         //initialize Encoders
         leftEncoder = new Encoder(RobotMap.DRIVE_ENCODER_LEFT_A, RobotMap.DRIVE_ENCODER_LEFT_B, true, CounterBase.EncodingType.k1X);
         rightEncoder = new Encoder(RobotMap.DRIVE_ENCODER_RIGHT_A, RobotMap.DRIVE_ENCODER_RIGHT_B, false, CounterBase.EncodingType.k1X);
-
+        leftEncoder.start();
+        rightEncoder.start();
         //initialize gyro
        gyro = new modifiedGyro(RobotMap.DRIVE_GYRO);
 
@@ -53,6 +54,9 @@ public class Drive {
     //the max angular velocity (duh)
     private final int MAX_ANGULAR_VELOCITY = 720;
     
+    //speed barrier for encoder, when encoder.getRate() exceeds this value, high gear automatically happens
+    private final double SPEED_BARRIER = 40;
+    
     //max voltage for drive
     private final double MAX_DRIVE_VOLTAGE = 20;
     
@@ -61,15 +65,7 @@ public class Drive {
     
     //joystick is driven like a halo warthog, left joystick goes forward and backward, right joystick goes left and right
     public void driveHalo(double throttle, double turn) {
-        //stop drive if drive motors voltage exceeds a value
-        /*
-        if(voltageSensor.getReading() > MAX_DRIVE_VOLTAGE) {
-            setLowGearOn();
-            return;
-        }
         
-        
-        */
         double modifiedTurn;
         double gyroKP = KP_NORMAL;
         if (gyroEnabled) {
@@ -77,6 +73,7 @@ public class Drive {
                 //if ther joystick is not pressed enough, immeaditely stop, don't even do the math
                 return;
             }
+            
 
             double currentAngularRateOfChange = gyro.getAngularRateOfChange();
             double desiredAngularRateOfChange = turn * MAX_ANGULAR_VELOCITY;
@@ -118,6 +115,19 @@ public class Drive {
     }
 
     public void drive(double leftX, double leftY, double rightX, double rightY) {
+        //stop drive if drive motors voltage exceeds a value
+        /*
+        if(voltageSensor.getReading() > MAX_DRIVE_VOLTAGE) {
+            setLowGearOn();
+            return;
+        }
+        */
+        
+        //Find if rate excededs certain value, if so, set it to high gear
+        if(abs(rightEncoder.getRate()) > SPEED_BARRIER && abs(leftEncoder.getRate()) > SPEED_BARRIER) {
+            setHighGearOn();
+        }
+        
         if(haloDriveEnabled) {
             driveHalo(leftY, rightX);
         }else if(tankDriveEnabled) {
