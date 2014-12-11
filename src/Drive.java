@@ -58,6 +58,16 @@ public class Drive {
     
     //joystick is driven like a halo warthog, left joystick goes forward and backward, right joystick goes left and right
     public void driveHalo(double throttle, double turn) {
+        //stop drive if drive motors voltage exceeds a value
+        /*
+        if(getCurrentDriveVoltage() > MAX_DRIVE_VOLTAGE) {
+            setLeft(0);
+            setRight(0);
+            return;
+        }
+        
+        
+        */
         double modifiedTurn;
         double gyroKP = KP_NORMAL;
         if (gyroEnabled) {
@@ -150,6 +160,10 @@ public class Drive {
     //enable this is you ever want to go just forward
     boolean straightPidEnabled = false;
 
+    public int getCurrentDriveVoltage() {
+        double totalVoltage = left1.getVoltage() + left2.getVoltage() + left3.getVoltage() + right1.getVoltage() + right2.getVoltage() + right3.getVoltage();
+        return totalVoltage;
+    }
     //this class takes care of PIDSource and PIDOutput, IN ONE CLASS OMG, and this straightPID fun is for autonomous only, so it will be unused until autonomous
     //ignore until later
     private class StraightPID implements PIDSource, PIDOutput {
