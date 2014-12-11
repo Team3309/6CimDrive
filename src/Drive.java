@@ -53,6 +53,9 @@ public class Drive {
     //the max angular velocity (duh)
     private final int MAX_ANGULAR_VELOCITY = 720;
     
+    //max voltage for drive
+    private final double MAX_DRIVE_VOLTAGE = 20;
+    
     //Now for all the possible kp constants
     private final double KP_NORMAL = .02;
     
@@ -60,9 +63,8 @@ public class Drive {
     public void driveHalo(double throttle, double turn) {
         //stop drive if drive motors voltage exceeds a value
         /*
-        if(getCurrentDriveVoltage() > MAX_DRIVE_VOLTAGE) {
-            setLeft(0);
-            setRight(0);
+        if(voltageSensor.getReading() > MAX_DRIVE_VOLTAGE) {
+            setLowGearOn();
             return;
         }
         
@@ -153,10 +155,17 @@ public class Drive {
         gyro.reset();
     }
     
-    //turns the solenoid on and off
+    //turns the solenoid on and off, dont call this method, use setgears
     public void setDriveshifter(boolean b) {
         driveShifter.set(b);
     }
+    public void setLowGearOn() {
+        setDriveShifter(false);
+    }
+    public void setHighGearOn() {
+        setDriveShifter(true);
+    }
+    
     //enable this is you ever want to go just forward
     boolean straightPidEnabled = false;
 
