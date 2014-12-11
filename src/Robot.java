@@ -63,9 +63,9 @@ public class Robot extends IterativeRobot {
               
         //changes the solenoid on and off for driveshifter
         if(driverController.getRB()) {
-            mDrive.setDriveshifter(true);
+            mDrive.setLowGearOn();
         }else {
-            mDrive.setDriveshifter(false);
+            mDrive.setHighGearOn();
         }
     }
 }
