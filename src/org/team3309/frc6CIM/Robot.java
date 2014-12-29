@@ -20,7 +20,7 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
         scheduler = Scheduler.getInstance();
         //make drive
-        mDrive = new Drive();
+        mDrive = mDrive.getInstance();
     }
 
     //When first put into disabled mode
