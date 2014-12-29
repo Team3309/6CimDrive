@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.Timer;
 
 //hhj
-public class modifiedGyro {
+public class ModifiedGyro {
 
     static final int kOversampleBits = 10;
     static final int kAverageBits = 0;
@@ -18,7 +18,7 @@ public class modifiedGyro {
     AccumulatorResult result;
   //can use m_voltsPerDefreePerSecond to scale and set a sensitevity, none is used right now so it will juse equal the default (.007)
 
-    public modifiedGyro(int port) {
+    public ModifiedGyro(int port) {
         m_analog = new AnalogChannel(port);
         initGyro();
     }
