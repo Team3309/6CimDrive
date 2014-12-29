@@ -24,8 +24,8 @@ public class Drive {
     private Solenoid driveShifter;
     
     //all the booleans for which drive is being used
-    boolean haloDriveEnabled = true;
-    boolean tankDriveEnabled = false;
+    private boolean haloDriveEnabled = true;
+    private boolean tankDriveEnabled = false;
 
     //the constructor
     public Drive() {
@@ -52,7 +52,7 @@ public class Drive {
     //change this to change threshold
     private final double THRESHOLD = .1;
     //tells if gyro is a yay or nay
-    boolean gyroEnabled = false;
+    private boolean gyroEnabled = false;
     //the max angular velocity (duh)
     private final int MAX_ANGULAR_VELOCITY = 720;
     
