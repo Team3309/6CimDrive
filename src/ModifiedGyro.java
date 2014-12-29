@@ -1,9 +1,12 @@
-
+/**
+ * Just like a regular gyro, except it can return angular velocity 
+ * and scale the output of getAngle()
+ */
 import edu.wpi.first.wpilibj.AccumulatorResult;
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.Timer;
 
-//hhj
+
 public class ModifiedGyro {
 
     static final int kOversampleBits = 10;
