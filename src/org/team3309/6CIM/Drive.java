@@ -1,4 +1,6 @@
 
+package org.team3309.6CIM;
+
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDOutput;
