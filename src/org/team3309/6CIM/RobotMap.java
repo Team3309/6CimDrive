@@ -1,3 +1,4 @@
+package org.team3309.6CIM;
 
 public class RobotMap {
     //all of these are ports, change them as the robot is build
