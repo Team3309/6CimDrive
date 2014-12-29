@@ -19,10 +19,11 @@ public class Drive {
     private ModifiedGyro gyro;
     private Solenoid driveShifter;
     
-    //all the booleans for which drive is being used
-    private boolean haloDriveEnabled = true;
-    private boolean tankDriveEnabled = false;
-
+    //all the constants for which drive is being used
+    private final int MODE_HALO_DRIVE = 0;
+    private final int MODE_TANK_DRIVE = 1;
+    private int driveMode = 0;
+    
     private static Drive instance;
     public Drive getInstance() {
         if(instance == null) {
@@ -134,14 +135,13 @@ public class Drive {
             setHighGearOn();
         }
         
-        if(haloDriveEnabled) {
+        if(driveMode == 0) {
             driveHalo(leftY, rightX);
-        }else if(tankDriveEnabled) {
+        }else if(driveMode == 1) {
             driveTank(leftY, rightY);
         }else {
             //if not drive is enabled, enable halo as default drive
-            haloDriveEnabled = true;
-            tankDriveEnabled = false;
+            driveMode = 0;
         }
     }
 
@@ -158,13 +158,11 @@ public class Drive {
     }
     
     public void setTankDrive() {
-        tankDriveEnabled = true;
-        haloDriveEnabled = false;
+        driveMode = MODE_TANK_DRIVE;
     }
     
     public void setHaloDrive() {
-        tankDriveEnabled = false;
-        haloDriveEnabled = true;
+        driveMode = MODE_HALO_DRIVE;
     }
     
     public void resetGyro() {
