@@ -11,13 +11,9 @@ import edu.wpi.first.wpilibj.Victor;
 public class Drive {
 
     //all of the sensors and motor controllers
-
-    private Victor left1;
-    private Victor left2;
-    private Victor left3;
-    private Victor right1;
-    private Victor right2;
-    private Victor right3;
+    private Victor[] leftVictors = new Victor[3];
+    private Victor[] rightVictors = new Victor[3];
+   
     private Encoder leftEncoder;
     private Encoder rightEncoder;
     private ModifiedGyro gyro;
@@ -36,13 +32,20 @@ public class Drive {
     }
     //the constructor
     private Drive() {
-        //initialize Victors
-        left1 = new Victor(RobotMap.DRIVE_LEFT_1);
-        left2 = new Victor(RobotMap.DRIVE_LEFT_2);
-        left3 = new Victor(RobotMap.DRIVE_LEFT_3);
-        right1 = new Victor(RobotMap.DRIVE_RIGHT_1);
-        right2 = new Victor(RobotMap.DRIVE_RIGHT_2);
-        right3 = new Victor(RobotMap.DRIVE_RIGHT_3);
+        //initialize Victors in their array
+        //For each loops didn't work :(
+        for(int i = 0; i < leftVictors.length; i++) {
+            if(i == 0) {
+                leftVictors[i] = new Victor(RobotMap.DRIVE_LEFT_1 );
+                rightVictors[i]  = new Victor(RobotMap.DRIVE_RIGHT_1);
+            }else if(i == 1) {
+                leftVictors[i] = new Victor(RobotMap.DRIVE_LEFT_2 );
+                rightVictors[i]  = new Victor(RobotMap.DRIVE_RIGHT_2);
+            }else if(i == 2) {
+                leftVictors[i] = new Victor(RobotMap.DRIVE_LEFT_3 );
+                rightVictors[i]  = new Victor(RobotMap.DRIVE_RIGHT_3);
+            }
+        }
         
         driveShifter = new Solenoid(RobotMap.DRIVE_DRIVESHIFTER);
 
@@ -149,15 +152,15 @@ public class Drive {
     }
 
     private void setLeft(double val) {
-        left1.set(val);
-        left2.set(val);
-        left3.set(val);
+        for(int i = 0; i < leftVictors.length; i++) {
+           leftVictors[i].set(val);
+        }
     }
 
     private void setRight(double val) {
-        right1.set(val);
-        right2.set(val);
-        right3.set(val);
+        for(int i = 0; i < rightVictors.length; i++) {
+           rightVictors[i].set(val);
+        }
     }
     
     public void setTankDrive() {
