@@ -27,8 +27,15 @@ public class Drive {
     private boolean haloDriveEnabled = true;
     private boolean tankDriveEnabled = false;
 
+    private static Drive instance;
+    public Drive getInstance() {
+        if(instance == null) {
+            instance = new Drive();
+        }
+        return instance;
+    }
     //the constructor
-    public Drive() {
+    private Drive() {
         //initialize Victors
         left1 = new Victor(RobotMap.DRIVE_LEFT_1);
         left2 = new Victor(RobotMap.DRIVE_LEFT_2);
