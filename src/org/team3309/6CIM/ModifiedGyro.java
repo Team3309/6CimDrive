@@ -2,6 +2,9 @@
  * Just like a regular gyro, except it can return angular velocity 
  * and scale the output of getAngle()
  */
+ 
+package org.team3309.6CIM;
+ 
 import edu.wpi.first.wpilibj.AccumulatorResult;
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.Timer;
