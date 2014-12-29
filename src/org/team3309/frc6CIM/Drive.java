@@ -24,6 +24,28 @@ public class Drive {
     private final int MODE_TANK_DRIVE = 1;
     private int driveMode = 0;
     
+    //enable this is you ever want to go just forward
+    private boolean straightPidEnabled = false;
+    
+    //This method takes when the equation returns above the max or below the min and fixes it so it does not.  Uses some math and gets the job done
+    private double skimGain = .25;
+    
+    //change this to change threshold
+    private final double THRESHOLD = .1;
+    //tells if gyro is a yay or nay
+    private boolean gyroEnabled = false;
+    //the max angular velocity (duh)
+    private final int MAX_ANGULAR_VELOCITY = 720;
+    
+    //speed barrier for encoder, when encoder.getRate() exceeds this value, high gear automatically happens
+    private final double SPEED_BARRIER = 40;
+    
+    //max voltage for drive
+    private final double MAX_DRIVE_VOLTAGE = 20;
+    
+    //Now for all the possible kp constants
+    private final double KP_NORMAL = .02;
+    
     private static Drive instance;
     public Drive getInstance() {
         if(instance == null) {
@@ -54,21 +76,7 @@ public class Drive {
 
     }
 
-    //change this to change threshold
-    private final double THRESHOLD = .1;
-    //tells if gyro is a yay or nay
-    private boolean gyroEnabled = false;
-    //the max angular velocity (duh)
-    private final int MAX_ANGULAR_VELOCITY = 720;
     
-    //speed barrier for encoder, when encoder.getRate() exceeds this value, high gear automatically happens
-    private final double SPEED_BARRIER = 40;
-    
-    //max voltage for drive
-    private final double MAX_DRIVE_VOLTAGE = 20;
-    
-    //Now for all the possible kp constants
-    private final double KP_NORMAL = .02;
     
     //joystick is driven like a halo warthog, left joystick goes forward and backward, right joystick goes left and right
     private void driveHalo(double throttle, double turn) {
@@ -100,8 +108,7 @@ public class Drive {
         setRight(right);
     }
     
-    //This method takes when the equation returns above the max or below the min and fixes it so it does not.  Uses some math and gets the job done
-    private double skimGain = .25;
+    
     double skim(double v) {
         // gain determines how much to skim off the top
         if (v > 1.0) {
@@ -180,8 +187,7 @@ public class Drive {
         setDriveShifter(true);
     }
     
-    //enable this is you ever want to go just forward
-    private boolean straightPidEnabled = false;
+    
 
     /*public int getCurrentDriveVoltage() {
         double totalVoltage = left1. + left2.getVoltage() + left3.getVoltage() + right1.getVoltage() + right2.getVoltage() + right3.getVoltage();
