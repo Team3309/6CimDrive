@@ -32,20 +32,14 @@ public class Drive {
     }
     //the constructor
     private Drive() {
-        //initialize Victors in their array
-        //For each loops didn't work :(
-        for(int i = 0; i < leftVictors.length; i++) {
-            if(i == 0) {
-                leftVictors[i] = new Victor(RobotMap.DRIVE_LEFT_1 );
-                rightVictors[i]  = new Victor(RobotMap.DRIVE_RIGHT_1);
-            }else if(i == 1) {
-                leftVictors[i] = new Victor(RobotMap.DRIVE_LEFT_2 );
-                rightVictors[i]  = new Victor(RobotMap.DRIVE_RIGHT_2);
-            }else if(i == 2) {
-                leftVictors[i] = new Victor(RobotMap.DRIVE_LEFT_3 );
-                rightVictors[i]  = new Victor(RobotMap.DRIVE_RIGHT_3);
-            }
-        }
+        //initialize Victors in their arrays
+        leftVictors[0] = new Victor(RobotMap.DRIVE_LEFT_1);
+        leftVictors[1] = new Victor(RobotMap.DRIVE_LEFT_2);
+        leftVictors[2] = new Victor(RobotMap.DRIVE_LEFT_3);
+        rightVictors[0] = new Victor(RobotMap.DRIVE_RIGHT_1);
+        rightVictors[1] = new Victor(RobotMap.DRIVE_RIGHT_2);
+        rightVictors[2] = new Victor(RobotMap.DRIVE_RIGHT_3);
+        
         
         driveShifter = new Solenoid(RobotMap.DRIVE_DRIVESHIFTER);
 
