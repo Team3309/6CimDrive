@@ -3,7 +3,7 @@
  * and scale the output of getAngle()
  */
  
-package org.team3309.6CIM;
+package org.team3309.frc6CIM;
  
 import edu.wpi.first.wpilibj.AccumulatorResult;
 import edu.wpi.first.wpilibj.AnalogChannel;

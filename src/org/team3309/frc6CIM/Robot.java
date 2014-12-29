@@ -1,4 +1,4 @@
-package org.team3309.6CIM;
+package org.team3309.frc6CIM;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;

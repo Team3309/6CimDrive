@@ -1,5 +1,5 @@
 
-package org.team3309.6CIM;
+package org.team3309.frc6CIM;
 
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
@@ -20,7 +20,7 @@ public class Drive {
     private Victor right3;
     private Encoder leftEncoder;
     private Encoder rightEncoder;
-    private modifiedGyro gyro;
+    private ModifiedGyro gyro;
     private Solenoid driveShifter;
     
     //all the booleans for which drive is being used
@@ -45,7 +45,7 @@ public class Drive {
         leftEncoder.start();
         rightEncoder.start();
         //initialize gyro
-       gyro = new modifiedGyro(RobotMap.DRIVE_GYRO);
+       gyro = new ModifiedGyro(RobotMap.DRIVE_GYRO);
 
     }
 
@@ -66,7 +66,7 @@ public class Drive {
     private final double KP_NORMAL = .02;
     
     //joystick is driven like a halo warthog, left joystick goes forward and backward, right joystick goes left and right
-    public void driveHalo(double throttle, double turn) {
+    private void driveHalo(double throttle, double turn) {
         
         double modifiedTurn;
         double gyroKP = KP_NORMAL;
@@ -111,7 +111,7 @@ public class Drive {
     //left joystick controls left side,
     //right joystick controls right side
     //simple and easy
-    public void driveTank(double leftY, double rightY) {
+    private void driveTank(double leftY, double rightY) {
         setLeft(leftY);
         setRight(rightY);
     }
@@ -126,7 +126,7 @@ public class Drive {
         */
         
         //Find if rate excededs certain value, if so, set it to high gear
-        if(abs(rightEncoder.getRate()) > SPEED_BARRIER && abs(leftEncoder.getRate()) > SPEED_BARRIER) {
+        if(Math.abs(rightEncoder.getRate()) > SPEED_BARRIER && Math.abs(leftEncoder.getRate()) > SPEED_BARRIER) {
             setHighGearOn();
         }
         
@@ -167,8 +167,8 @@ public class Drive {
         gyro.reset();
     }
     
-    //turns the solenoid on and off, dont call this method, use setgears
-    public void setDriveshifter(boolean b) {
+    //turns the solenoid on and off
+    private void setDriveShifter(boolean b) {
         driveShifter.set(b);
     }
     public void setLowGearOn() {
@@ -179,13 +179,14 @@ public class Drive {
     }
     
     //enable this is you ever want to go just forward
-    boolean straightPidEnabled = false;
+    private boolean straightPidEnabled = false;
 
-    public int getCurrentDriveVoltage() {
-        double totalVoltage = left1.getVoltage() + left2.getVoltage() + left3.getVoltage() + right1.getVoltage() + right2.getVoltage() + right3.getVoltage();
+    /*public int getCurrentDriveVoltage() {
+        double totalVoltage = left1. + left2.getVoltage() + left3.getVoltage() + right1.getVoltage() + right2.getVoltage() + right3.getVoltage();
         return totalVoltage;
-    }
-    //this class takes care of PIDSource and PIDOutput, IN ONE CLASS OMG, and this straightPID fun is for autonomous only, so it will be unused until autonomous
+    }*/
+    
+    //this class takes care of PIDSource and PIDOutput, IN ONE CLASS , and this straightPID fun is for autonomous only, so it will be unused until autonomous
     //ignore until later
     private class StraightPID implements PIDSource, PIDOutput {
 

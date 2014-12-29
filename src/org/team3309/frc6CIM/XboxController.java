@@ -1,4 +1,4 @@
-package org.team3309.6CIM;
+package org.team3309.frc6CIM;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.Joystick;
     Summary of methods used:
      double axis = Controller.getRawAxis(axisNumber); 
      boolean button = Controller.getRawButton(buttonNumber);
-        Constants define these values in XboxControllerMap.java, so replace "buttonNumber" with "XboxControllerMap.BUTTON_A"
+        Constants define these values in java, so replace "buttonNumber" with "BUTTON_A"
     This Class is the main class for Xbox remotes, it pretty much just applies the Joystick class and makes it work with xbox remotes
     The methods below are called in TeleopPeriodic inside the main robot class to see if buttons are presed or not. (Axes too)
   **/
@@ -58,63 +58,63 @@ public class XboxController extends GenericHID{
   
   //Now, here are all the button methods, they all return a boolean that returns true if button is pressed (obviously)
   public boolean getA() {
-    return Controller.getRawButton(XboxControllerMap.BUTTON_A);
+    return Controller.getRawButton(BUTTON_A);
   } 
   
   public boolean getB() {
-    return Controller.getRawButton(XboxControllerMap.BUTTON_B);
+    return Controller.getRawButton(BUTTON_B);
   } 
   
   public boolean getXBut() {
-    return Controller.getRawButton(XboxControllerMap.BUTTON_X);
+    return Controller.getRawButton(BUTTON_X);
   } 
   
   public boolean getYBut() {
-    return Controller.getRawButton(XboxControllerMap.BUTTON_Y);
+    return Controller.getRawButton(BUTTON_Y);
   } 
   
   public boolean getDpadUp() {
-    return Controller.getRawButton(XboxControllerMap.BUTTON_DPAD_UP);
+    return Controller.getRawButton(BUTTON_DPAD_UP);
   } 
   
   public boolean getDpadDown() {
-    return Controller.getRawButton(XboxControllerMap.BUTTON_DPAD_DOWN);
+    return Controller.getRawButton(BUTTON_DPAD_DOWN);
   } 
   
   public boolean getDpadLeft() {
-    return Controller.getRawButton(XboxControllerMap.BUTTON_DPAD_LEFT);
+    return Controller.getRawButton(BUTTON_DPAD_LEFT);
   } 
   
   public boolean getDpadRight() {
-    return Controller.getRawButton(XboxControllerMap.BUTTON_DPAD_RIGHT);
+    return Controller.getRawButton(BUTTON_DPAD_RIGHT);
   } 
   
   public boolean getBack() {
-    return Controller.getRawButton(XboxControllerMap.BUTTON_BACK);
+    return Controller.getRawButton(BUTTON_BACK);
   }
   
   public boolean getStart() {
-    return Controller.getRawButton(XboxControllerMap.BUTTON_START);
+    return Controller.getRawButton(BUTTON_START);
   } 
   
   public boolean getLeftStickButton() {
-    return Controller.getRawButton(XboxControllerMap.BUTTON_LEFT_STICK);
+    return Controller.getRawButton(BUTTON_LEFT_STICK);
   }
   
   public boolean getRightStickButton() {
-    return Controller.getRawButton(XboxControllerMap.BUTTON_RIGHT_STICK);
+    return Controller.getRawButton(BUTTON_RIGHT_STICK);
   } 
   
   public boolean getLB() {
-    return Controller.getRawButton(XboxControllerMap.BUTTON_LB);
+    return Controller.getRawButton(BUTTON_LB);
   } 
   
   public boolean getRB() {
-    return Controller.getRawButton(XboxControllerMap.BUTTON_RB);
+    return Controller.getRawButton(BUTTON_RB);
   } 
   
   public boolean getHome() {
-    return Controller.getRawButton(XboxControllerMap.BUTTON_HOME);
+    return Controller.getRawButton(BUTTON_HOME);
   }
   
   
@@ -127,31 +127,31 @@ public class XboxController extends GenericHID{
   
   //Returns from -1 to 1
   public double getLeftX() {
-    double temp = Controller.getRawAxis(XboxControllerMap.AXIS_LEFT_X);
+    double temp = Controller.getRawAxis(AXIS_LEFT_X);
     double scaledVal = scaleAxis(temp);
     return scaledVal;
   }
   //Returns from -1 to 1
   public double getLeftY() {
-     double temp = Controller.getRawAxis(XboxControllerMap.AXIS_LEFT_Y);
+     double temp = Controller.getRawAxis(AXIS_LEFT_Y);
      double scaledVal = scaleAxis(temp);
      return scaledVal;
   }
   //Not really sure what this return, I read somewhere that it returns rightTrigger - leftTrigger where each trigger returns from 0 to 1
   public double getTriggers() {
-    double temp = Controller.getRawAxis(XboxControllerMap.AXIS_TRIGGER);
+    double temp = Controller.getRawAxis(AXIS_TRIGGER);
     double scaledVal = scaleAxis(temp);
     return scaledVal;
   }
   //Returns from -1 to 1
   public double getRightX() {
-    double temp = Controller.getRawAxis(XboxControllerMap.AXIS_RIGHT_X);
+    double temp = Controller.getRawAxis(AXIS_RIGHT_X);
     double scaledVal = scaleAxis(temp);
     return scaledVal;
   }
   //Returns from -1 to 1
   public double getRightY() {
-     double temp = Controller.getRawAxis(XboxControllerMap.AXIS_RIGHT_Y);
+     double temp = Controller.getRawAxis(AXIS_RIGHT_Y);
      double scaledVal = scaleAxis(temp);
      return scaledVal;
   }  
