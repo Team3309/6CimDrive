@@ -16,7 +16,9 @@ public class Robot extends IterativeRobot {
 
     private Scheduler scheduler;
     Drive mDrive;
+
     //Runs when Robot is turned on
+
     public void robotInit() {
         scheduler = Scheduler.getInstance();
         //make drive
@@ -51,21 +53,21 @@ public class Robot extends IterativeRobot {
     //This function is called periodically during operator control
     public void teleopPeriodic() {
         scheduler.run();
-        
+
         //gets all 4 axis from driver remote and depending on what drive the robot is in, the values will be used accordingly
         mDrive.drive(driverController.getLeftX(), driverController.getLeftY(), driverController.getRightX(), driverController.getRightY());
-        
+
         //changes drive
-        if(driverController.getLB()) {
+        if (driverController.getLB()) {
             mDrive.setTankDrive();
-        }else {
+        } else {
             mDrive.setHaloDrive();
         }
-              
+
         //changes the solenoid on and off for driveshifter
-        if(driverController.getRB()) {
+        if (driverController.getRB()) {
             mDrive.setLowGearOn();
-        }else {
+        } else {
             mDrive.setHighGearOn();
         }
     }

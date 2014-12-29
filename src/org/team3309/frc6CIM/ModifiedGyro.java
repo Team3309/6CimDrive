@@ -1,14 +1,12 @@
 /**
- * Just like a regular gyro, except it can return angular velocity 
- * and scale the output of getAngle()
+ * Just like a regular gyro, except it can return angular velocity and scale the
+ * output of getAngle()
  */
- 
 package org.team3309.frc6CIM;
- 
+
 import edu.wpi.first.wpilibj.AccumulatorResult;
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.Timer;
-
 
 public class ModifiedGyro {
 
@@ -22,7 +20,7 @@ public class ModifiedGyro {
     double m_offset;
     boolean m_channelAllocated;
     AccumulatorResult result;
-  //can use m_voltsPerDefreePerSecond to scale and set a sensitevity, none is used right now so it will juse equal the default (.007)
+    //can use m_voltsPerDefreePerSecond to scale and set a sensitevity, none is used right now so it will juse equal the default (.007)
 
     public ModifiedGyro(int port) {
         m_analog = new AnalogChannel(port);
@@ -74,7 +72,7 @@ public class ModifiedGyro {
         double rate = (m_analog.getVoltage() - m_offset) / m_voltsPerDegreePerSecond;
         return rate;
     }
-    
+
     //called when drift becomes too much
     public void reset() {
         m_offset = m_analog.getVoltage();
