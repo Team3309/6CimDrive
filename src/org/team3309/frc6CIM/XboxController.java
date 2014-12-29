@@ -45,73 +45,73 @@ public class XboxController extends GenericHID {
     public static final int AXIS_RIGHT_Y = 5;
 
     //main instance joystick being called throughout class 
-    Joystick Controller;
+    Joystick controller;
 
   //info for usage of xbox remotes found at - http://www.chiefdelphi.com/forums/showthread.php?t=83597
     //Constructor, takes number and makes xbox remote that number joystick that is set by driver station
     public XboxController(int joystickNum) {
-        Controller = new Joystick(joystickNum);
+        controller = new Joystick(joystickNum);
     }
 
     //Now, here are all the button methods, they all return a boolean that returns true if button is pressed (obviously)
     public boolean getA() {
-        return Controller.getRawButton(BUTTON_A);
+        return controller.getRawButton(BUTTON_A);
     }
 
     public boolean getB() {
-        return Controller.getRawButton(BUTTON_B);
+        return controller.getRawButton(BUTTON_B);
     }
 
     public boolean getXBut() {
-        return Controller.getRawButton(BUTTON_X);
+        return controller.getRawButton(BUTTON_X);
     }
 
     public boolean getYBut() {
-        return Controller.getRawButton(BUTTON_Y);
+        return controller.getRawButton(BUTTON_Y);
     }
 
     public boolean getDpadUp() {
-        return Controller.getRawButton(BUTTON_DPAD_UP);
+        return controller.getRawButton(BUTTON_DPAD_UP);
     }
 
     public boolean getDpadDown() {
-        return Controller.getRawButton(BUTTON_DPAD_DOWN);
+        return controller.getRawButton(BUTTON_DPAD_DOWN);
     }
 
     public boolean getDpadLeft() {
-        return Controller.getRawButton(BUTTON_DPAD_LEFT);
+        return controller.getRawButton(BUTTON_DPAD_LEFT);
     }
 
     public boolean getDpadRight() {
-        return Controller.getRawButton(BUTTON_DPAD_RIGHT);
+        return controller.getRawButton(BUTTON_DPAD_RIGHT);
     }
 
     public boolean getBack() {
-        return Controller.getRawButton(BUTTON_BACK);
+        return controller.getRawButton(BUTTON_BACK);
     }
 
     public boolean getStart() {
-        return Controller.getRawButton(BUTTON_START);
+        return controller.getRawButton(BUTTON_START);
     }
 
     public boolean getLeftStickButton() {
-        return Controller.getRawButton(BUTTON_LEFT_STICK);
+        return controller.getRawButton(BUTTON_LEFT_STICK);
     }
 
     public boolean getRightStickButton() {
-        return Controller.getRawButton(BUTTON_RIGHT_STICK);
+        return controller.getRawButton(BUTTON_RIGHT_STICK);
     }
 
     public boolean getLB() {
-        return Controller.getRawButton(BUTTON_LB);
+        return controller.getRawButton(BUTTON_LB);
     }
 
     public boolean getRB() {
-        return Controller.getRawButton(BUTTON_RB);
+        return controller.getRawButton(BUTTON_RB);
     }
 
     public boolean getHome() {
-        return Controller.getRawButton(BUTTON_HOME);
+        return controller.getRawButton(BUTTON_HOME);
     }
 
   //Next are the methods for getting the Axes, they return a double
@@ -121,7 +121,7 @@ public class XboxController extends GenericHID {
     //  Chagne the scaleAxis method to add a deadband, or to add a constant multiplier to every axis.
     //Returns from -1 to 1
     public double getLeftX() {
-        double temp = Controller.getRawAxis(AXIS_LEFT_X);
+        double temp = controller.getRawAxis(AXIS_LEFT_X);
         double scaledVal = scaleAxis(temp);
         return scaledVal;
     }
@@ -129,7 +129,7 @@ public class XboxController extends GenericHID {
     //Returns from -1 to 1
 
     public double getLeftY() {
-        double temp = Controller.getRawAxis(AXIS_LEFT_Y);
+        double temp = controller.getRawAxis(AXIS_LEFT_Y);
         double scaledVal = scaleAxis(temp);
         return scaledVal;
     }
@@ -137,7 +137,7 @@ public class XboxController extends GenericHID {
     //Not really sure what this return, I read somewhere that it returns rightTrigger - leftTrigger where each trigger returns from 0 to 1
 
     public double getTriggers() {
-        double temp = Controller.getRawAxis(AXIS_TRIGGER);
+        double temp = controller.getRawAxis(AXIS_TRIGGER);
         double scaledVal = scaleAxis(temp);
         return scaledVal;
     }
@@ -145,7 +145,7 @@ public class XboxController extends GenericHID {
     //Returns from -1 to 1
 
     public double getRightX() {
-        double temp = Controller.getRawAxis(AXIS_RIGHT_X);
+        double temp = controller.getRawAxis(AXIS_RIGHT_X);
         double scaledVal = scaleAxis(temp);
         return scaledVal;
     }
@@ -153,7 +153,7 @@ public class XboxController extends GenericHID {
     //Returns from -1 to 1
 
     public double getRightY() {
-        double temp = Controller.getRawAxis(AXIS_RIGHT_Y);
+        double temp = controller.getRawAxis(AXIS_RIGHT_Y);
         double scaledVal = scaleAxis(temp);
         return scaledVal;
     }
@@ -205,7 +205,7 @@ public class XboxController extends GenericHID {
     }
 
     public double getRawAxis(int i) {
-        return Controller.getRawAxis(i);
+        return controller.getRawAxis(i);
     }
 
     public boolean getTrigger(Hand hand) {
@@ -229,7 +229,7 @@ public class XboxController extends GenericHID {
     }
 
     public boolean getRawButton(int i) {
-        return Controller.getRawButton(i);
+        return controller.getRawButton(i);
     }
 
 }//END OF CLASS
