@@ -106,7 +106,7 @@ public class Drive {
         setRight(right);
     }
 
-    double skim(double v) {
+    private double skim(double v) {
         // gain determines how much to skim off the top
         if (v > 1.0) {
             return -((v - 1.0) * skimGain);
