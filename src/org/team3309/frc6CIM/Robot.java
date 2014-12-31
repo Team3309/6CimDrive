@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends IterativeRobot {
-
+    
     XboxController driverController = new XboxController(1);
     XboxController operatorController = new XboxController(2);
 
@@ -22,7 +22,7 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
         scheduler = Scheduler.getInstance();
         //make drive
-        mDrive = mDrive.getInstance();
+        mDrive = Drive.getInstance();
     }
 
     //When first put into disabled mode
