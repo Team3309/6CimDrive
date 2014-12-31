@@ -47,7 +47,7 @@ public class Drive {
 
     private static Drive instance;
 
-    public Drive getInstance() {
+    public static Drive getInstance() {
         if (instance == null) {
             instance = new Drive();
         }
@@ -82,7 +82,7 @@ public class Drive {
 
         double modifiedTurn;
         double gyroKP = KP_NORMAL;
-        if (gyroEnabled) {
+        if (false) {
             if (Math.abs(throttle) < THRESHOLD && Math.abs(turn) < THRESHOLD) {
                 //if ther joystick is not pressed enough, immeaditely stop, don't even do the math
                 return;
