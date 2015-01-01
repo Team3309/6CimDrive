@@ -32,7 +32,7 @@ public class Drive {
     //change this to change threshold
     private final double THRESHOLD = .1;
     //tells if gyro is a yay or nay
-    private boolean gyroEnabled = false;
+    private boolean gyroEnabled = true;
     //the max angular velocity (duh)
     private final int MAX_ANGULAR_VELOCITY = 720;
 
@@ -98,7 +98,7 @@ public class Drive {
         
         
         //KRAGER FIX GYRO, VALUES WENT TO 2, SHOULD NEVER HIT 2
-        if (false) {
+        if (gyroEnabled) {
             
 
             double currentAngularRateOfChange = gyro.getAngularRateOfChange();
