@@ -104,13 +104,20 @@ public class Drive {
             double currentAngularRateOfChange = gyro.getAngularRateOfChange();
             double desiredAngularRateOfChange = turn * MAX_ANGULAR_VELOCITY;
             modifiedTurn = (currentAngularRateOfChange - desiredAngularRateOfChange) * gyroKP;
+            System.out.println("Current: " + currentAngularRateOfChange + " Desired: " + desiredAngularRateOfChange);
+            System.out.println("Error: " + (currentAngularRateOfChange - desiredAngularRateOfChange) + "modified value: " + modifiedTurn);
         } else {
             modifiedTurn = turn;
+            //We need to find the max angular velocity this robot can go
+            System.out.println("Angle: " + gyro.getAngle() + " Angular Velocity: " + gyro.getAngularRateOfChange());
         }
 
         double t_left = throttle - modifiedTurn;
         double t_right = throttle + modifiedTurn;
 
+        System.out.println(t_left + " t_Left");
+        System.out.println(t_right + " t_Right");
+        
         double left = t_left + skim(t_right);
         double right = t_right + skim(t_left);
 
