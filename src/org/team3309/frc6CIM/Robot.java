@@ -69,6 +69,8 @@ public class Robot extends IterativeRobot {
             mDrive.setLowGearOn();
         } else {
             mDrive.setHighGearOn();
+            System.out.println("High Gear Enabled");
         }
+        System.out.println("------------------------\n");
     }
 }
