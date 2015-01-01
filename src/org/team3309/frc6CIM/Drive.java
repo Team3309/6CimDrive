@@ -34,7 +34,7 @@ public class Drive {
     //tells if gyro is a yay or nay
     private boolean gyroEnabled = true;
     //the max angular velocity (duh)
-    private final int MAX_ANGULAR_VELOCITY = 720;
+    private final int MAX_ANGULAR_VELOCITY = 1000;
 
     //speed barrier for encoder, when encoder.getRate() exceeds this value, high gear automatically happens
     private final double SPEED_BARRIER = 40;
@@ -43,7 +43,7 @@ public class Drive {
     private final double MAX_DRIVE_VOLTAGE = 20;
 
     //Now for all the possible kp constants
-    private final double KP_NORMAL = .02;
+    private final double KP_NORMAL = .004;
 
     private static Drive instance;
 
@@ -79,7 +79,7 @@ public class Drive {
 
     //joystick is driven like a halo warthog, left joystick goes forward and backward, right joystick goes left and right
     private void driveHalo(double throttle, double turn) {
-
+        
         double modifiedTurn;
         double gyroKP = KP_NORMAL;
         
@@ -100,20 +100,22 @@ public class Drive {
         //KRAGER FIX GYRO, VALUES WENT TO 2, SHOULD NEVER HIT 2
         if (gyroEnabled) {
             
-
+               System.out.println("turn: " + turn + " throttle: " + throttle);
+         
             double currentAngularRateOfChange = gyro.getAngularRateOfChange();
             double desiredAngularRateOfChange = turn * MAX_ANGULAR_VELOCITY;
             modifiedTurn = (currentAngularRateOfChange - desiredAngularRateOfChange) * gyroKP;
             System.out.println("Current: " + currentAngularRateOfChange + " Desired: " + desiredAngularRateOfChange);
             System.out.println("Error: " + (currentAngularRateOfChange - desiredAngularRateOfChange) + "modified value: " + modifiedTurn);
         } else {
+            System.out.println("gyro not enabled");
             modifiedTurn = turn;
             //We need to find the max angular velocity this robot can go
             System.out.println("Angle: " + gyro.getAngle() + " Angular Velocity: " + gyro.getAngularRateOfChange());
         }
 
-        double t_left = throttle - modifiedTurn;
-        double t_right = throttle + modifiedTurn;
+        double t_left = throttle + modifiedTurn;
+        double t_right = throttle - modifiedTurn;
 
         System.out.println(t_left + " t_Left");
         System.out.println(t_right + " t_Right");
