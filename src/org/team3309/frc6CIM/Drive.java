@@ -82,11 +82,24 @@ public class Drive {
 
         double modifiedTurn;
         double gyroKP = KP_NORMAL;
+        
+        if(Math.abs(throttle) < THRESHOLD){
+            throttle = 0;
+        }
+        
+        if(Math.abs(turn) < THRESHOLD){
+            turn = 0;
+        }
+        
+        //if (Math.abs(throttle) < THRESHOLD && Math.abs(turn) < THRESHOLD) {
+        //        //if ther joystick is not pressed enough, immeaditely stop, don't even do the math
+        //        return;
+        //    }
+        
+        
+        //KRAGER FIX GYRO, VALUES WENT TO 2, SHOULD NEVER HIT 2
         if (false) {
-            if (Math.abs(throttle) < THRESHOLD && Math.abs(turn) < THRESHOLD) {
-                //if ther joystick is not pressed enough, immeaditely stop, don't even do the math
-                return;
-            }
+            
 
             double currentAngularRateOfChange = gyro.getAngularRateOfChange();
             double desiredAngularRateOfChange = turn * MAX_ANGULAR_VELOCITY;
@@ -95,13 +108,16 @@ public class Drive {
             modifiedTurn = turn;
         }
 
-        double t_left = throttle + modifiedTurn;
-        double t_right = throttle - modifiedTurn;
+        double t_left = throttle - modifiedTurn;
+        double t_right = throttle + modifiedTurn;
 
         double left = t_left + skim(t_right);
         double right = t_right + skim(t_left);
 
-        //negative because Vinnie did it
+        
+        System.out.println(left + " Left");
+        System.out.println(right + " Right");
+        //negative because sides are mirror images
         setLeft(-left);
         setRight(right);
     }
