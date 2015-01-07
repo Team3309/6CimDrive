@@ -2,6 +2,7 @@ package org.team3309.frc6CIM;
 
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -30,11 +31,11 @@ public class Drive {
     private double skimGain = .25;
 
     //change this to change threshold
-    private final double THRESHOLD = .1;
+    private final double THRESHOLD = .3;
     //tells if gyro is a yay or nay
     private boolean gyroEnabled = true;
     //the max angular velocity (duh)
-    private final int MAX_ANGULAR_VELOCITY = 1000;
+    private final int MAX_ANGULAR_VELOCITY = 800;
 
     //speed barrier for encoder, when encoder.getRate() exceeds this value, high gear automatically happens
     private final double SPEED_BARRIER = 40;
@@ -43,13 +44,15 @@ public class Drive {
     private final double MAX_DRIVE_VOLTAGE = 20;
 
     //Now for all the possible kp constants
-    private final double KP_NORMAL = .004;
+    private final double KP_NORMAL = .002;
 
     private static Drive instance;
 
+    private PIDController straightPID = null;
     public static Drive getInstance() {
         if (instance == null) {
             instance = new Drive();
+            
         }
         return instance;
     }
@@ -75,6 +78,9 @@ public class Drive {
         //initialize gyro
         gyro = new ModifiedGyro(RobotMap.DRIVE_GYRO);
 
+        StraightPID  straight = new StraightPID();
+        straightPID = new PIDController(.001, 0 , .02, straight, straight);
+        straightPID.disable();
     }
 
     //joystick is driven like a halo warthog, left joystick goes forward and backward, right joystick goes left and right
@@ -100,7 +106,7 @@ public class Drive {
         //KRAGER FIX GYRO, VALUES WENT TO 2, SHOULD NEVER HIT 2
         if (gyroEnabled) {
             
-               System.out.println("turn: " + turn + " throttle: " + throttle);
+            System.out.println("turn: " + turn + " throttle: " + throttle);
          
             double currentAngularRateOfChange = gyro.getAngularRateOfChange();
             double desiredAngularRateOfChange = turn * MAX_ANGULAR_VELOCITY;
@@ -158,12 +164,10 @@ public class Drive {
          return;
          }
          */
-
         //Find if rate excededs certain value, if so, set it to high gear
         if (Math.abs(rightEncoder.getRate()) > SPEED_BARRIER && Math.abs(leftEncoder.getRate()) > SPEED_BARRIER) {
             setHighGearOn();
         }
-
         if (driveMode == 0) {
             driveHalo(leftY, rightX);
         } else if (driveMode == 1) {
@@ -210,7 +214,13 @@ public class Drive {
     public void setHighGearOn() {
         setDriveShifter(true);
     }
-
+    public void stop() {
+        drive(0,0,0,0);
+    }
+    
+    public void driveForward(int counts) {
+        straightPID.setSetpoint(counts);
+    }
     /*public int getCurrentDriveVoltage() {
      double totalVoltage = left1. + left2.getVoltage() + left3.getVoltage() + right1.getVoltage() + right2.getVoltage() + right3.getVoltage();
      return totalVoltage;
