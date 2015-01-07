@@ -14,12 +14,14 @@ public class Robot extends IterativeRobot {
     XboxController driverController = new XboxController(1);
     XboxController operatorController = new XboxController(2);
 
+    
     private Scheduler scheduler;
     Drive mDrive;
 
     //Runs when Robot is turned on
 
     public void robotInit() {
+        
         scheduler = Scheduler.getInstance();
         //make drive
         mDrive = Drive.getInstance();
@@ -37,7 +39,8 @@ public class Robot extends IterativeRobot {
 
     //Init to Auto
     public void autonomousInit() {
-
+        AutoForwardAndTurn command = new AutoForwardAndTurn();
+        command.start();
     }
 
     //This function is called periodically during autonomous
