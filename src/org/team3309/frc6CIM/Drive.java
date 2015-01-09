@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Victor;
 
 public class Drive {
-    
+
     private boolean isPrintingDriveInfo = false;
 
     //all of the sensors and motor controllers
@@ -105,20 +105,18 @@ public class Drive {
         //    }
         //KRAGER FIX GYRO, VALUES WENT TO 2, SHOULD NEVER HIT 2
         if (gyroEnabled) {
-            
-            
 
             double currentAngularRateOfChange = gyro.getAngularRateOfChange();
             double desiredAngularRateOfChange = turn * MAX_ANGULAR_VELOCITY;
             modifiedTurn = (currentAngularRateOfChange - desiredAngularRateOfChange) * gyroKP;
-            if(isPrintingDriveInfo) {
+            if (isPrintingDriveInfo) {
                 System.out.println("turn: " + turn + " throttle: " + throttle);
                 System.out.println("Current: " + currentAngularRateOfChange + " Desired: " + desiredAngularRateOfChange);
                 System.out.println("Error: " + (currentAngularRateOfChange - desiredAngularRateOfChange) + "modified value: " + modifiedTurn);
             }
         } else {
             modifiedTurn = turn;
-            if(isPrintingDriveInfo) {
+            if (isPrintingDriveInfo) {
                 System.out.println("gyro not enabled");
                 System.out.println("Angle: " + gyro.getAngle() + " Angular Velocity: " + gyro.getAngularRateOfChange());
             }
@@ -126,7 +124,7 @@ public class Drive {
         double t_left = throttle + modifiedTurn;
         double t_right = throttle - modifiedTurn;
 
-        if(isPrintingDriveInfo) {
+        if (isPrintingDriveInfo) {
             System.out.println(t_left + " t_Left");
             System.out.println(t_right + " t_Right");
         }
@@ -134,7 +132,7 @@ public class Drive {
         double left = t_left + skim(t_right);
         double right = t_right + skim(t_left);
 
-        if(isPrintingDriveInfo) {
+        if (isPrintingDriveInfo) {
             System.out.println(left + " Left");
             System.out.println(right + " Right");
         }
@@ -228,9 +226,11 @@ public class Drive {
     public void driveForward(int counts) {
         straightPID.setSetpoint(counts);
     }
+
     public boolean isPrintingDriveInfo() {
         return isPrintingDriveInfo;
     }
+
     public void setPrintingDriveInfo(boolean b) {
         isPrintingDriveInfo = b;
     }
@@ -241,7 +241,6 @@ public class Drive {
 
     //this class takes care of PIDSource and PIDOutput, IN ONE CLASS , and this straightPID fun is for autonomous only, so it will be unused until autonomous
     //ignore until later
-
     private class StraightPID implements PIDSource, PIDOutput {
 
         public double pidGet() {
