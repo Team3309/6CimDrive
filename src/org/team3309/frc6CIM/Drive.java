@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Victor;
 
 public class Drive {
+    
+    private boolean isPrintingDriveInfo = false;
 
     //all of the sensors and motor controllers
     private Victor[] leftVictors = new Victor[3];
@@ -49,16 +51,16 @@ public class Drive {
     private static Drive instance;
 
     private PIDController straightPID = null;
+
     public static Drive getInstance() {
         if (instance == null) {
             instance = new Drive();
-            
+
         }
         return instance;
     }
 
     //the constructor
-
     private Drive() {
         //initialize Victors in their arrays
         leftVictors[0] = new Victor(RobotMap.DRIVE_LEFT_1);
@@ -78,36 +80,34 @@ public class Drive {
         //initialize gyro
         gyro = new ModifiedGyro(RobotMap.DRIVE_GYRO);
 
-        StraightPID  straight = new StraightPID();
-        straightPID = new PIDController(.001, 0 , .02, straight, straight);
+        StraightPID straight = new StraightPID();
+        straightPID = new PIDController(.001, 0, .02, straight, straight);
         straightPID.disable();
     }
 
     //joystick is driven like a halo warthog, left joystick goes forward and backward, right joystick goes left and right
     private void driveHalo(double throttle, double turn) {
-        
+
         double modifiedTurn;
         double gyroKP = KP_NORMAL;
-        
-        if(Math.abs(throttle) < THRESHOLD){
+
+        if (Math.abs(throttle) < THRESHOLD) {
             throttle = 0;
         }
-        
-        if(Math.abs(turn) < THRESHOLD){
+
+        if (Math.abs(turn) < THRESHOLD) {
             turn = 0;
         }
-        
+
         //if (Math.abs(throttle) < THRESHOLD && Math.abs(turn) < THRESHOLD) {
         //        //if ther joystick is not pressed enough, immeaditely stop, don't even do the math
         //        return;
         //    }
-        
-        
         //KRAGER FIX GYRO, VALUES WENT TO 2, SHOULD NEVER HIT 2
         if (gyroEnabled) {
-            
+
             System.out.println("turn: " + turn + " throttle: " + throttle);
-         
+
             double currentAngularRateOfChange = gyro.getAngularRateOfChange();
             double desiredAngularRateOfChange = turn * MAX_ANGULAR_VELOCITY;
             modifiedTurn = (currentAngularRateOfChange - desiredAngularRateOfChange) * gyroKP;
@@ -125,11 +125,10 @@ public class Drive {
 
         System.out.println(t_left + " t_Left");
         System.out.println(t_right + " t_Right");
-        
+
         double left = t_left + skim(t_right);
         double right = t_right + skim(t_left);
 
-        
         System.out.println(left + " Left");
         System.out.println(right + " Right");
         //negative because sides are mirror images
@@ -214,19 +213,28 @@ public class Drive {
     public void setHighGearOn() {
         setDriveShifter(true);
     }
+
     public void stop() {
-        drive(0,0,0,0);
+        drive(0, 0, 0, 0);
     }
-    
+
     public void driveForward(int counts) {
         straightPID.setSetpoint(counts);
+    }
+    public boolean isPrintingDriveInfo() {
+        return isPrintingDriveInfo;
+    }
+    public void setPrintingDriveInfo(boolean b) {
+        isPrintingDriveInfo = b;
     }
     /*public int getCurrentDriveVoltage() {
      double totalVoltage = left1. + left2.getVoltage() + left3.getVoltage() + right1.getVoltage() + right2.getVoltage() + right3.getVoltage();
      return totalVoltage;
      }*/
+
     //this class takes care of PIDSource and PIDOutput, IN ONE CLASS , and this straightPID fun is for autonomous only, so it will be unused until autonomous
     //ignore until later
+
     private class StraightPID implements PIDSource, PIDOutput {
 
         public double pidGet() {
