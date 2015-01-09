@@ -105,32 +105,39 @@ public class Drive {
         //    }
         //KRAGER FIX GYRO, VALUES WENT TO 2, SHOULD NEVER HIT 2
         if (gyroEnabled) {
-
-            System.out.println("turn: " + turn + " throttle: " + throttle);
+            
+            
 
             double currentAngularRateOfChange = gyro.getAngularRateOfChange();
             double desiredAngularRateOfChange = turn * MAX_ANGULAR_VELOCITY;
             modifiedTurn = (currentAngularRateOfChange - desiredAngularRateOfChange) * gyroKP;
-            System.out.println("Current: " + currentAngularRateOfChange + " Desired: " + desiredAngularRateOfChange);
-            System.out.println("Error: " + (currentAngularRateOfChange - desiredAngularRateOfChange) + "modified value: " + modifiedTurn);
+            if(isPrintingDriveInfo) {
+                System.out.println("turn: " + turn + " throttle: " + throttle);
+                System.out.println("Current: " + currentAngularRateOfChange + " Desired: " + desiredAngularRateOfChange);
+                System.out.println("Error: " + (currentAngularRateOfChange - desiredAngularRateOfChange) + "modified value: " + modifiedTurn);
+            }
         } else {
-            System.out.println("gyro not enabled");
             modifiedTurn = turn;
-            //We need to find the max angular velocity this robot can go
-            System.out.println("Angle: " + gyro.getAngle() + " Angular Velocity: " + gyro.getAngularRateOfChange());
+            if(isPrintingDriveInfo) {
+                System.out.println("gyro not enabled");
+                System.out.println("Angle: " + gyro.getAngle() + " Angular Velocity: " + gyro.getAngularRateOfChange());
+            }
         }
-
         double t_left = throttle + modifiedTurn;
         double t_right = throttle - modifiedTurn;
 
-        System.out.println(t_left + " t_Left");
-        System.out.println(t_right + " t_Right");
+        if(isPrintingDriveInfo) {
+            System.out.println(t_left + " t_Left");
+            System.out.println(t_right + " t_Right");
+        }
 
         double left = t_left + skim(t_right);
         double right = t_right + skim(t_left);
 
-        System.out.println(left + " Left");
-        System.out.println(right + " Right");
+        if(isPrintingDriveInfo) {
+            System.out.println(left + " Left");
+            System.out.println(right + " Right");
+        }
         //negative because sides are mirror images
         setLeft(-left);
         setRight(right);
