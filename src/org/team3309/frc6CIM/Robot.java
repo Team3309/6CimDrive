@@ -25,6 +25,9 @@ public class Robot extends IterativeRobot {
         scheduler = Scheduler.getInstance();
         //make drive
         mDrive = Drive.getInstance();
+        
+        //sets it so all information about the drive will be printed repeatidly during driving
+        mDrive.setPrintingDriveInfo(true);
     }
 
     //When first put into disabled mode
