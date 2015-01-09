@@ -7,8 +7,9 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class Drive {
+public class Drive extends Subsystem{
 
     private boolean isPrintingDriveInfo = false;
 
@@ -240,6 +241,8 @@ public class Drive {
      return totalVoltage;
      }*/
 
+    protected void initDefaultCommand() {
+    }
     //this class takes care of PIDSource and PIDOutput, IN ONE CLASS , and this straightPID fun is for autonomous only, so it will be unused until autonomous
     //ignore until later
     private class StraightPID implements PIDSource, PIDOutput {
