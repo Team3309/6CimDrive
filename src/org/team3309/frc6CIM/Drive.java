@@ -108,7 +108,8 @@ public class Drive {
 
             double currentAngularRateOfChange = gyro.getAngularRateOfChange();
             double desiredAngularRateOfChange = turn * MAX_ANGULAR_VELOCITY;
-            modifiedTurn = (currentAngularRateOfChange - desiredAngularRateOfChange) * gyroKP;
+            //Change back if it doesnt work
+            modifiedTurn = (currentAngularRateOfChange + desiredAngularRateOfChange) * gyroKP;
             if (isPrintingDriveInfo) {
                 System.out.println("turn: " + turn + " throttle: " + throttle);
                 System.out.println("Current: " + currentAngularRateOfChange + " Desired: " + desiredAngularRateOfChange);
