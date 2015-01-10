@@ -27,6 +27,7 @@ public class Claw extends Subsystem {
     private Claw() {
         rightClaw = new Victor(RobotMap.CLAW_RIGHTSIDE);
         leftClaw = new Victor(RobotMap.CLAW_LEFTSIDE);
+        
     }
     
     public void initDefaultCommand() {
@@ -44,4 +45,8 @@ public class Claw extends Subsystem {
         leftClaw.set(-1);
     }
     
+    public void stopClaw() {
+        rightClaw.set(0);
+        leftClaw.set(0);
+    }
 }
