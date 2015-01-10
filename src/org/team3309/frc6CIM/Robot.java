@@ -15,7 +15,8 @@ public class Robot extends IterativeRobot {
     XboxController operatorController = new XboxController(2);
 
     private Scheduler scheduler;
-    Drive mDrive;
+    private Drive mDrive;
+    private Claw mClaw;
 
     //Runs when Robot is turned on
     public void robotInit() {
@@ -23,9 +24,9 @@ public class Robot extends IterativeRobot {
         scheduler = Scheduler.getInstance();
         //make drive
         mDrive = Drive.getInstance();
-
+        mClaw = Claw.getInstance();
         //sets it so all information about the drive will be printed repeatidly during driving
-        mDrive.setPrintingDriveInfo(true);
+        mDrive.setPrintingDriveInfo(false);
     }
 
     //When first put into disabled mode
@@ -69,14 +70,24 @@ public class Robot extends IterativeRobot {
         }
 
         //changes the solenoid on and off for driveshifter
-        if (driverController.getRB()) {
+        if (driverController.getA()) {
             mDrive.setLowGearOn();
-        } else {
+        } else if(driverController.getB()){
             mDrive.setHighGearOn();
             if (mDrive.isPrintingDriveInfo()) {
                 System.out.println("High Gear Enabled");
             }
         }
+        
+        //checks if triggers are pressed in any way shape or form
+        if (driverController.getRB()) {
+            mClaw.runClawInward();
+        }else if(driverController.getLB()) {
+            mClaw.runClawOutward();
+        }else {
+            mClaw.stopClaw();
+        }
+        
         if (mDrive.isPrintingDriveInfo()) {
             System.out.println("------------------------\n");
         }
