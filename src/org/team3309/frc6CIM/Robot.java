@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team3309.constantchanger.constantChanger;
 
 public class Robot extends IterativeRobot {
 
@@ -20,10 +21,13 @@ public class Robot extends IterativeRobot {
     private Scheduler scheduler;
     private Drive mDrive;
     private Claw mClaw;
-
+    
+    private boolean constantChanger = true;
     //Runs when Robot is turned on
     public void robotInit() {
-
+        if(constantChanger) {
+            constantChanger frame = new constantChanger();
+        }
         scheduler = Scheduler.getInstance();
         //make drive
         mDrive = Drive.getInstance();
