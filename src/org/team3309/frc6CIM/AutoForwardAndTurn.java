@@ -25,9 +25,10 @@ public class AutoForwardAndTurn extends Command{
 
     protected void execute() {
        Timer timer = new Timer();
-       while(timer.get() < 3000) {
-           mDrive.drive(0,.5,0,0);
-       }
+      
+       timer.start();
+       mDrive.drive(0,-.5,0,0);
+      
        mDrive.stop();
     }
 
