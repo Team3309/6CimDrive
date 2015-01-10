@@ -9,13 +9,14 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class Drive extends Subsystem{
+public class Drive extends Subsystem {
 
     private boolean isPrintingDriveInfo = false;
 
     //all of the sensors and motor controllers
     private Victor[] leftVictors = new Victor[3];
     private Victor[] rightVictors = new Victor[3];
+    private Victor strafeVictor;
 
     private Encoder leftEncoder;
     private Encoder rightEncoder;
@@ -71,6 +72,8 @@ public class Drive extends Subsystem{
         rightVictors[1] = new Victor(RobotMap.DRIVE_RIGHT_2);
         rightVictors[2] = new Victor(RobotMap.DRIVE_RIGHT_3);
 
+        strafeVictor = new Victor(RobotMap.DRIVE_STRAFE);
+
         driveShifter = new Solenoid(RobotMap.DRIVE_DRIVESHIFTER);
 
         //initialize Encoders
@@ -87,7 +90,7 @@ public class Drive extends Subsystem{
     }
 
     //joystick is driven like a halo warthog, left joystick goes forward and backward, right joystick goes left and right
-    private void driveHalo(double throttle, double turn) {
+    private void driveHalo(double throttle, double turn, double strafe) {
 
         double modifiedTurn;
         double gyroKP = KP_NORMAL;
@@ -141,6 +144,7 @@ public class Drive extends Subsystem{
         //negative because sides are mirror images
         setLeft(-left);
         setRight(right);
+        setStrafe(strafe);
     }
 
     private double skim(double v) {
@@ -175,7 +179,7 @@ public class Drive extends Subsystem{
             setHighGearOn();
         }
         if (driveMode == 0) {
-            driveHalo(leftY, rightX);
+            driveHalo(leftY, rightX, leftX);
         } else if (driveMode == 1) {
             driveTank(leftY, rightY);
         } else {
@@ -194,6 +198,10 @@ public class Drive extends Subsystem{
         for (int i = 0; i < rightVictors.length; i++) {
             rightVictors[i].set(val);
         }
+    }
+
+    private void setStrafe(double value) {
+        strafeVictor.set(value);
     }
 
     public void setTankDrive() {
@@ -243,6 +251,7 @@ public class Drive extends Subsystem{
 
     protected void initDefaultCommand() {
     }
+
     //this class takes care of PIDSource and PIDOutput, IN ONE CLASS , and this straightPID fun is for autonomous only, so it will be unused until autonomous
     //ignore until later
     private class StraightPID implements PIDSource, PIDOutput {
@@ -253,7 +262,7 @@ public class Drive extends Subsystem{
 
         public void pidWrite(double d) {
             if (straightPidEnabled) {
-                driveHalo(d, 0);
+                driveHalo(d, 0, 0);
             }
         }
     }
