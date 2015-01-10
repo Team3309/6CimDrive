@@ -72,22 +72,22 @@ public class Robot extends IterativeRobot {
         //changes the solenoid on and off for driveshifter
         if (driverController.getA()) {
             mDrive.setLowGearOn();
-        } else if(driverController.getB()){
+        } else if (driverController.getB()) {
             mDrive.setHighGearOn();
             if (mDrive.isPrintingDriveInfo()) {
                 System.out.println("High Gear Enabled");
             }
         }
-        
+
         //checks if triggers are pressed in any way shape or form
         if (driverController.getRB()) {
             mClaw.runClawInward();
-        }else if(driverController.getLB()) {
+        } else if (driverController.getLB()) {
             mClaw.runClawOutward();
-        }else {
+        } else {
             mClaw.stopClaw();
         }
-        
+
         if (mDrive.isPrintingDriveInfo()) {
             System.out.println("------------------------\n");
         }
