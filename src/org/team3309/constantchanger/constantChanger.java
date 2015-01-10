@@ -43,7 +43,8 @@ public class constantChanger extends JFrame {
         southPanel.add(maxAngularVelocityField);
         
         kpConstantField.setVisible(true);
-        kpConstantField.addActionListener(new TextFieldListener());
+        kpConstantField.addActionListener(new TextFieldListener("KP", kpConstantField));
+        maxAngularVelocityField.addActionListener(new TextFieldListener("MaxAV", kpConstantField));
         getContentPane().add(northPanel, BorderLayout.NORTH);
         getContentPane().add(southPanel, BorderLayout.SOUTH);
 
