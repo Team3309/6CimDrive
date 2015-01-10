@@ -39,4 +39,9 @@ public class Claw extends Subsystem {
         leftClaw.set(1);
     }
     
+    public void runClawOutward() {
+        rightClaw.set(-1);
+        leftClaw.set(-1);
+    }
+    
 }
