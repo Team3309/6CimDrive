@@ -20,6 +20,7 @@ public class RobotMap {
 
     public static final int DRIVE_GYRO = 1;
 
-    public static final int DRIVE_DRIVESHIFTER = 1;
+    public static final int DRIVE_DRIVESHIFTER_RIGHT = 1;
+    public static final int DRIVE_DRIVESHIFTER_LEFT = 2;
 
 }
