@@ -1,5 +1,8 @@
 package org.team3309.frc6CIM;
 
+import org.team3309.frc6CIM.commands.AutoForwardAndTurn;
+import org.team3309.frc6CIM.subsystems.Claw;
+import org.team3309.frc6CIM.subsystems.Drive;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
