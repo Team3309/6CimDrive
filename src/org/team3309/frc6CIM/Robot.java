@@ -22,6 +22,9 @@ public class Robot extends IterativeRobot {
     private Drive mDrive;
     private Claw mClaw;
     
+    //The command that will begin running at the start of autonomous
+    private Command autoCommand;
+    
     private boolean constantChanger = true;
     //Runs when Robot is turned on
     public void robotInit() {
@@ -48,8 +51,8 @@ public class Robot extends IterativeRobot {
 
     //Init to Auto
     public void autonomousInit() {
-        AutoForwardAndTurn command = new AutoForwardAndTurn();
-        command.start();
+        autoCommand = new AutoForwardAndTurn();
+        autoCommand.start();
     }
 
     //This function is called periodically during autonomous
@@ -60,6 +63,7 @@ public class Robot extends IterativeRobot {
     //Init to Tele
     public void teleopInit() {
         mDrive.resetGyro();
+        autoCommand.cancel();
     }
 
     //This function is called periodically during operator control
