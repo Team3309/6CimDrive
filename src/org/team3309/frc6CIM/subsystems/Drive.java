@@ -102,7 +102,9 @@ public class Drive extends Subsystem {
         if (Math.abs(throttle) < THRESHOLD) {
             throttle = 0;
         }
-
+        if(Math.abs(strafe) < THRESHOLD) {
+            strafe = 0;
+        }
         if (Math.abs(turn) < THRESHOLD) {
             turn = 0;
         }
@@ -205,7 +207,9 @@ public class Drive extends Subsystem {
     }
 
     private void setStrafe(double value) {
-        strafeVictor.set(value);
+        if(Math.abs(value) > .7) 
+            value = .7;
+        strafeVictor.set(-value);
     }
 
     public void setTankDrive() {
