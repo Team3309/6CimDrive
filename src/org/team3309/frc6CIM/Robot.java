@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team3309.constantchanger.constantChanger;
+//import org.team3309.constantchanger.constantChanger;
 
 public class Robot extends IterativeRobot {
 
@@ -29,7 +29,7 @@ public class Robot extends IterativeRobot {
     //Runs when Robot is turned on
     public void robotInit() {
         if(constantChanger) {
-            constantChanger frame = new constantChanger();
+            //constantChanger frame = new constantChanger();
         }
         scheduler = Scheduler.getInstance();
         //make drive
@@ -63,7 +63,7 @@ public class Robot extends IterativeRobot {
     //Init to Tele
     public void teleopInit() {
         mDrive.resetGyro();
-        autoCommand.cancel();
+        //autoCommand.cancel();
     }
 
     //This function is called periodically during operator control
