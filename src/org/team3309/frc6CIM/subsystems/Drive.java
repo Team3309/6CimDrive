@@ -13,6 +13,7 @@ import org.team3309.frc6CIM.RobotMap;
 
 public class Drive extends Subsystem {
 //sorry Joey, I committed with your account
+
     private boolean isPrintingDriveInfo = false;
 
     //all of the sensors and motor controllers
@@ -93,6 +94,8 @@ public class Drive extends Subsystem {
         straightPID.disable();
     }
 
+    double pidRequestedValue;
+    boolean aimAngleIsSet = false;
     //joystick is driven like a halo warthog, left joystick goes forward and backward, right joystick goes left and right
     private void driveHalo(double throttle, double turn, double strafe) {
 
@@ -102,7 +105,7 @@ public class Drive extends Subsystem {
         if (Math.abs(throttle) < THRESHOLD) {
             throttle = 0;
         }
-        if(Math.abs(strafe) < THRESHOLD) {
+        if (Math.abs(strafe) < THRESHOLD) {
             strafe = 0;
         }
         if (Math.abs(turn) < THRESHOLD) {
@@ -119,7 +122,7 @@ public class Drive extends Subsystem {
             double currentAngularRateOfChange = gyro.getAngularRateOfChange();
             double desiredAngularRateOfChange = turn * MAX_ANGULAR_VELOCITY;
             //Change back if it doesnt work
-            modifiedTurn = (currentAngularRateOfChange + desiredAngularRateOfChange) * gyroKP;
+            modifiedTurn = (currentAngularRateOfChange - desiredAngularRateOfChange) * gyroKP;
             if (isPrintingDriveInfo) {
                 System.out.println("turn: " + turn + " throttle: " + throttle);
                 System.out.println("Current: " + currentAngularRateOfChange + " Desired: " + desiredAngularRateOfChange);
@@ -147,10 +150,66 @@ public class Drive extends Subsystem {
             System.out.println(left + " Left");
             System.out.println(right + " Right");
         }
-        //negative because sides are mirror images
-        setLeft(-left);
-        setRight(right);
-        setStrafe(strafe);
+
+        double pidLastError;
+        double pid_Kp = 0.05;
+        double pid_Ki = 0.0;
+        double pid_Kd = 0.0;
+        double pidSensorCurrentValue = gyro.getAngle();
+
+        double pidError;
+
+        double pidIntegral;
+        double pidDerivative;
+        double pidDrive;
+        boolean pidRunning;
+        pidLastError = 0;
+        if (strafe != 0) {
+            if(!aimAngleIsSet) {
+                pidRequestedValue = gyro.getAngle();
+                System.out.println("pidRequested = " + pidRequestedValue);
+                System.out.println(" ");
+                aimAngleIsSet = true;
+            }
+            pidIntegral = 0;
+
+            // Read the sensor value
+            pidSensorCurrentValue = gyro.getAngle();
+
+            // calculate error
+            pidError = pidSensorCurrentValue - pidRequestedValue;
+            System.out.println(pidSensorCurrentValue + " - "  + pidRequestedValue + " = Error: " + pidError);
+
+            // calculate the derivative
+            pidDerivative = pidError - pidLastError;
+            pidLastError = pidError;
+            //System.out.println("Last Error: " + pidLastError);
+                   
+
+            // calculate drive
+            pidDrive = (pid_Kp * pidError) + (pid_Kd * pidDerivative);
+            System.out.println(pid_Kp + " * "  + pidError + " = " + pidDrive);
+            
+                // limit drive
+                /*if (pidDrive > PID_DRIVE_MAX) {
+             pidDrive = PID_DRIVE_MAX;
+             }
+             if (pidDrive < PID_DRIVE_MIN) {
+             pidDrive = PID_DRIVE_MIN;
+             }*/
+            // send to motor
+            setLeft(-pidDrive);
+            setRight(-pidDrive);
+            setStrafe(strafe);
+            //System.out.println("pidDrive: " + pidDrive + " requested: " + pidRequestedValue);
+        } else {
+            //negative because sides are mirror images
+            aimAngleIsSet = false;
+            setLeft(-left);
+            setRight(right);
+            setStrafe(strafe);
+            //System.out.println(gyro.getAngle());
+        }
     }
 
     private double skim(double v) {
@@ -207,8 +266,7 @@ public class Drive extends Subsystem {
     }
 
     private void setStrafe(double value) {
-        if(Math.abs(value) > .7) 
-            value = .7;
+
         strafeVictor.set(-value);
     }
 
@@ -226,8 +284,14 @@ public class Drive extends Subsystem {
 
     //turns the solenoid on and off
     private void setDriveShifter(boolean b) {
-        driveShifterRight.set(b);
-        driveShifterLeft.set(b);
+        if(b){
+             driveShifterLeft.set(false);
+             driveShifterRight.set(true);
+        }
+        else if(!b){
+            driveShifterRight.set(false);
+            driveShifterLeft.set(true);
+        }
     }
 
     public void setLowGearOn() {
@@ -253,19 +317,19 @@ public class Drive extends Subsystem {
     public void setPrintingDriveInfo(boolean b) {
         isPrintingDriveInfo = b;
     }
-    
+
     public double getKP() {
         return KP_NORMAL;
     }
-    
+
     public void setKP(double value) {
         KP_NORMAL = value;
     }
-    
+
     public double getMaxAV() {
         return MAX_ANGULAR_VELOCITY;
     }
-    
+
     public void setMaxAV(int value) {
         MAX_ANGULAR_VELOCITY = value;
     }
