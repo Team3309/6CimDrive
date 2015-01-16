@@ -24,8 +24,8 @@ public class Drive extends Subsystem {
     private Encoder leftEncoder;
     private Encoder rightEncoder;
     private ModifiedGyro gyro;
-    private Solenoid driveShifterRight;
-    private Solenoid driveShifterLeft;
+    private Solenoid driveShifterHighGear;
+    private Solenoid driveShifterLowGear;
 
     //all the constants for which drive is being used
     private final int MODE_HALO_DRIVE = 0;
@@ -78,8 +78,8 @@ public class Drive extends Subsystem {
 
         strafeVictor = new Victor(RobotMap.DRIVE_STRAFE);
 
-        driveShifterRight = new Solenoid(RobotMap.DRIVE_DRIVESHIFTER_RIGHT);
-        driveShifterLeft = new Solenoid(RobotMap.DRIVE_DRIVESHIFTER_LEFT);
+        driveShifterHighGear = new Solenoid(RobotMap.DRIVE_DRIVESHIFTER_RIGHT);
+        driveShifterLowGear = new Solenoid(RobotMap.DRIVE_DRIVESHIFTER_LEFT);
 
         //initialize Encoders
         leftEncoder = new Encoder(RobotMap.DRIVE_ENCODER_LEFT_A, RobotMap.DRIVE_ENCODER_LEFT_B, true, CounterBase.EncodingType.k1X);
@@ -285,12 +285,12 @@ public class Drive extends Subsystem {
     //turns the solenoid on and off
     private void setDriveShifter(boolean b) {
         if(b){
-             driveShifterLeft.set(false);
-             driveShifterRight.set(true);
+             driveShifterLowGear.set(false);
+             driveShifterHighGear.set(true);
         }
         else if(!b){
-            driveShifterRight.set(false);
-            driveShifterLeft.set(true);
+            driveShifterHighGear.set(false);
+            driveShifterLowGear.set(true);
         }
     }
 
