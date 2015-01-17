@@ -49,13 +49,14 @@ public class Drive extends Subsystem {
     //speed barrier for encoder, when encoder.getRate() exceeds this value, high gear automatically happens
     private final double SPEED_BARRIER = 40;
 
-
     //Now for all the possible kp constants
     private double KP_NORMAL = .001;
 
     private static Drive instance;
 
     private PIDController straightPID = null;
+
+    private double throttle = 0;
 
     public static Drive getInstance() {
         if (instance == null) {
@@ -101,7 +102,7 @@ public class Drive extends Subsystem {
     private void driveHalo(double throttle, double turn, double strafe) {
         double modifiedTurn;
         double gyroKP = KP_NORMAL;
-
+        this.throttle = throttle;
         if (Math.abs(throttle) < THRESHOLD) {
             throttle = 0;
         }
@@ -117,16 +118,11 @@ public class Drive extends Subsystem {
         //        return;
         //    }
         //KRAGER FIX GYRO, VALUES WENT TO 2, SHOULD NEVER HIT 2
-        if (throttle != 0 && turn == 0 && strafe == 0) { //only going straight, nothing else
-            if (!straightPID.isEnable()) {
-                straightPID.setSetpoint(gyro.getAngle());
-                straightPID.enable();
-            }
-
-        } else if (strafe != 0) {
+        if (strafe != 0) { 
+            //straightPID.disable();
             double pid_Kp_NoThrottle = 0.05;
             double pid_Kp_Throttle = 0.03;
-            
+
             double pidSensorCurrentValue;
 
             double pidError;
@@ -145,7 +141,7 @@ public class Drive extends Subsystem {
 
             // calculate error
             pidError = pidSensorCurrentValue - pidRequestedValue;
-                //System.out.println(pidSensorCurrentValue + " - "  + pidRequestedValue + " = Error: " + pidError);
+            //System.out.println(pidSensorCurrentValue + " - "  + pidRequestedValue + " = Error: " + pidError);
 
             if (throttle == 0) {
                 // calculate drive
@@ -174,8 +170,8 @@ public class Drive extends Subsystem {
             //System.out.println("pidDrive: " + pidDrive + " requested: " + pidRequestedValue);
 
         } else {  //use default tank drive by default, no strafe, no 
+            //straightPID.disable();
             if (gyroEnabled) {
-                straightPID.disable();
                 double currentAngularRateOfChange = gyro.getAngularRateOfChange();
                 double desiredAngularRateOfChange = turn * MAX_ANGULAR_VELOCITY;
                 //Change back if it doesnt work
@@ -353,14 +349,23 @@ public class Drive extends Subsystem {
     //ignore until later
     private class StraightPID implements PIDSource, PIDOutput {
 
+        private double throttle;
+
+        public void setThrottle(double throttle) {
+            this.throttle = throttle;
+        }
+
         public double pidGet() {
             return gyro.getAngle();
         }
 
         public void pidWrite(double d) {
-            if (straightPidEnabled) {
-                driveHalo(d, 0, 0);
-            }
+            double leftPower = (throttle - d);
+            double rightPower = (throttle + d);
+            System.out.println("FS Left: " + leftPower + " FS RIGHT: " + rightPower);
+            setLeft(leftPower);
+            setRight(rightPower);
+            System.out.println("PID!" + d);
         }
     }
 }
