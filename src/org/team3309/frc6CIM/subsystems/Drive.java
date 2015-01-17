@@ -49,8 +49,6 @@ public class Drive extends Subsystem {
     //speed barrier for encoder, when encoder.getRate() exceeds this value, high gear automatically happens
     private final double SPEED_BARRIER = 40;
 
-    //max voltage for drive
-    private double MAX_DRIVE_VOLTAGE = 20;
 
     //Now for all the possible kp constants
     private double KP_NORMAL = .001;
