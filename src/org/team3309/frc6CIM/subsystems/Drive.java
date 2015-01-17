@@ -34,6 +34,7 @@ public class Drive extends Subsystem {
 
     //enable this is you ever want to go just forward
     private boolean straightPidEnabled = false;
+    private boolean straightAngleSet = false;
 
     //This method takes when the equation returns above the max or below the min and fixes it so it does not.  Uses some math and gets the job done
     private double skimGain = .25;
@@ -43,7 +44,7 @@ public class Drive extends Subsystem {
     //tells if gyro is a yay or nay
     private boolean gyroEnabled = true;
     //the max angular velocity (duh)
-    private int MAX_ANGULAR_VELOCITY = 800;
+    private int MAX_ANGULAR_VELOCITY = 720;
 
     //speed barrier for encoder, when encoder.getRate() exceeds this value, high gear automatically happens
     private final double SPEED_BARRIER = 40;
@@ -52,7 +53,7 @@ public class Drive extends Subsystem {
     private double MAX_DRIVE_VOLTAGE = 20;
 
     //Now for all the possible kp constants
-    private double KP_NORMAL = .002;
+    private double KP_NORMAL = .001;
 
     private static Drive instance;
 
@@ -96,9 +97,10 @@ public class Drive extends Subsystem {
 
     double pidRequestedValue;
     boolean aimAngleIsSet = false;
+
+    //PIDCommand
     //joystick is driven like a halo warthog, left joystick goes forward and backward, right joystick goes left and right
     private void driveHalo(double throttle, double turn, double strafe) {
-
         double modifiedTurn;
         double gyroKP = KP_NORMAL;
 
@@ -117,99 +119,101 @@ public class Drive extends Subsystem {
         //        return;
         //    }
         //KRAGER FIX GYRO, VALUES WENT TO 2, SHOULD NEVER HIT 2
-        if (gyroEnabled) {
-
-            double currentAngularRateOfChange = gyro.getAngularRateOfChange();
-            double desiredAngularRateOfChange = turn * MAX_ANGULAR_VELOCITY;
-            //Change back if it doesnt work
-            modifiedTurn = (currentAngularRateOfChange - desiredAngularRateOfChange) * gyroKP;
-            if (isPrintingDriveInfo) {
-                System.out.println("turn: " + turn + " throttle: " + throttle);
-                System.out.println("Current: " + currentAngularRateOfChange + " Desired: " + desiredAngularRateOfChange);
-                System.out.println("Error: " + (currentAngularRateOfChange - desiredAngularRateOfChange) + "modified value: " + modifiedTurn);
+        if (throttle != 0 && turn == 0 && strafe == 0) { //only going straight, nothing else
+            if (!straightPID.isEnable()) {
+                straightPID.setSetpoint(gyro.getAngle());
+                straightPID.enable();
             }
-        } else {
-            modifiedTurn = turn;
-            if (isPrintingDriveInfo) {
-                System.out.println("gyro not enabled");
-                System.out.println("Angle: " + gyro.getAngle() + " Angular Velocity: " + gyro.getAngularRateOfChange());
-            }
-        }
-        double t_left = throttle + modifiedTurn;
-        double t_right = throttle - modifiedTurn;
 
-        if (isPrintingDriveInfo) {
-            System.out.println(t_left + " t_Left");
-            System.out.println(t_right + " t_Right");
-        }
+        } else if (strafe != 0) {
+            double pid_Kp_NoThrottle = 0.05;
+            double pid_Kp_Throttle = 0.03;
+            
+            double pidSensorCurrentValue;
 
-        double left = t_left + skim(t_right);
-        double right = t_right + skim(t_left);
+            double pidError;
 
-        if (isPrintingDriveInfo) {
-            System.out.println(left + " Left");
-            System.out.println(right + " Right");
-        }
+            double pidDrive;
 
-        double pidLastError;
-        double pid_Kp = 0.05;
-        double pid_Ki = 0.0;
-        double pid_Kd = 0.0;
-        double pidSensorCurrentValue = gyro.getAngle();
-
-        double pidError;
-
-        double pidIntegral;
-        double pidDerivative;
-        double pidDrive;
-        boolean pidRunning;
-        pidLastError = 0;
-        if (strafe != 0) {
-            if(!aimAngleIsSet) {
+            if (!aimAngleIsSet) {
                 pidRequestedValue = gyro.getAngle();
                 System.out.println("pidRequested = " + pidRequestedValue);
                 System.out.println(" ");
                 aimAngleIsSet = true;
             }
-            pidIntegral = 0;
 
             // Read the sensor value
             pidSensorCurrentValue = gyro.getAngle();
 
             // calculate error
             pidError = pidSensorCurrentValue - pidRequestedValue;
-            System.out.println(pidSensorCurrentValue + " - "  + pidRequestedValue + " = Error: " + pidError);
+                //System.out.println(pidSensorCurrentValue + " - "  + pidRequestedValue + " = Error: " + pidError);
 
-            // calculate the derivative
-            pidDerivative = pidError - pidLastError;
-            pidLastError = pidError;
-            //System.out.println("Last Error: " + pidLastError);
-                   
+            if (throttle == 0) {
+                // calculate drive
+                pidDrive = ((pid_Kp_NoThrottle * pidError));
+                System.out.println("Drive: " + pid_Kp_NoThrottle + " * " + pidError + " = " + pidDrive);
+                setLeft(-pidDrive);
+                setRight(pidDrive);
+            } else {
+                // calculate drive
+                //if(throttle == 0){
+                pidDrive = ((pid_Kp_Throttle * pidError));
+                /*}else {
+                 System.out.println("Changed PID = modified");
+                 pidDrive = modifiedTurn;
+                 aimAngleIsSet = false;
+                 }*/
 
-            // calculate drive
-            pidDrive = (pid_Kp * pidError) + (pid_Kd * pidDerivative);
-            System.out.println(pid_Kp + " * "  + pidError + " = " + pidDrive);
-            
-                // limit drive
-                /*if (pidDrive > PID_DRIVE_MAX) {
-             pidDrive = PID_DRIVE_MAX;
-             }
-             if (pidDrive < PID_DRIVE_MIN) {
-             pidDrive = PID_DRIVE_MIN;
-             }*/
-            // send to motor
-            setLeft(-pidDrive);
-            setRight(-pidDrive);
+                System.out.println("Drive: " + pid_Kp_Throttle + " * " + pidError + " = " + pidDrive);
+                double leftPower = (throttle - pidDrive);
+                double rightPower = (throttle + pidDrive);
+                System.out.println("FS Left: " + leftPower + " FS RIGHT: " + rightPower);
+                setLeft(leftPower);
+                setRight(rightPower);
+            }
             setStrafe(strafe);
             //System.out.println("pidDrive: " + pidDrive + " requested: " + pidRequestedValue);
-        } else {
+
+        } else {  //use default tank drive by default, no strafe, no 
+            if (gyroEnabled) {
+                straightPID.disable();
+                double currentAngularRateOfChange = gyro.getAngularRateOfChange();
+                double desiredAngularRateOfChange = turn * MAX_ANGULAR_VELOCITY;
+                //Change back if it doesnt work
+                modifiedTurn = (currentAngularRateOfChange - desiredAngularRateOfChange) * gyroKP;
+                if (isPrintingDriveInfo) {
+                    System.out.println("turn: " + turn + " throttle: " + throttle);
+                    System.out.println("Current: " + currentAngularRateOfChange + " Desired: " + desiredAngularRateOfChange);
+                    System.out.println("Error: " + (currentAngularRateOfChange - desiredAngularRateOfChange) + "modified value: " + modifiedTurn);
+                }
+            } else {
+                modifiedTurn = turn;
+            }
+
+            double t_left = throttle - modifiedTurn;
+            double t_right = throttle + modifiedTurn;
+
+            if (isPrintingDriveInfo) {
+                System.out.println(t_left + " t_Left");
+                System.out.println(t_right + " t_Right");
+            }
+
+            double left = t_left + skim(t_right);
+            double right = t_right + skim(t_left);
+
+            if (isPrintingDriveInfo) {
+                System.out.println(left + " Left");
+                System.out.println(right + " Right");
+            }
             //negative because sides are mirror images
             aimAngleIsSet = false;
-            setLeft(-left);
+            setLeft(left);
             setRight(right);
             setStrafe(strafe);
             //System.out.println(gyro.getAngle());
         }
+
     }
 
     private double skim(double v) {
@@ -239,6 +243,10 @@ public class Drive extends Subsystem {
          return;
          }
          */
+
+        //reverse these because pushing the Y joysticks forward returns a negative value, this is sixed here
+        leftY = -leftY;
+        rightY = -rightY;
         //Find if rate excededs certain value, if so, set it to high gear
         if (Math.abs(rightEncoder.getRate()) > SPEED_BARRIER && Math.abs(leftEncoder.getRate()) > SPEED_BARRIER) {
             setHighGearOn();
@@ -253,15 +261,17 @@ public class Drive extends Subsystem {
         }
     }
 
-    private void setLeft(double val) {
+    public void setLeft(double val) {
         for (int i = 0; i < leftVictors.length; i++) {
+            //negative to accoung for reversed polarity
             leftVictors[i].set(val);
         }
     }
 
-    private void setRight(double val) {
+    public void setRight(double val) {
         for (int i = 0; i < rightVictors.length; i++) {
-            rightVictors[i].set(val);
+
+            rightVictors[i].set(-val);
         }
     }
 
@@ -284,11 +294,10 @@ public class Drive extends Subsystem {
 
     //turns the solenoid on and off
     private void setDriveShifter(boolean b) {
-        if(b){
-             driveShifterLowGear.set(false);
-             driveShifterHighGear.set(true);
-        }
-        else if(!b){
+        if (b) {
+            driveShifterLowGear.set(false);
+            driveShifterHighGear.set(true);
+        } else if (!b) {
             driveShifterHighGear.set(false);
             driveShifterLowGear.set(true);
         }
@@ -332,6 +341,7 @@ public class Drive extends Subsystem {
 
     public void setMaxAV(int value) {
         MAX_ANGULAR_VELOCITY = value;
+
     }
     /*public int getCurrentDriveVoltage() {
      double totalVoltage = left1. + left2.getVoltage() + left3.getVoltage() + right1.getVoltage() + right2.getVoltage() + right3.getVoltage();
@@ -346,7 +356,7 @@ public class Drive extends Subsystem {
     private class StraightPID implements PIDSource, PIDOutput {
 
         public double pidGet() {
-            return (leftEncoder.get() + rightEncoder.get()) / 2;
+            return gyro.getAngle();
         }
 
         public void pidWrite(double d) {
