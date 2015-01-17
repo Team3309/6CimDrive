@@ -18,6 +18,7 @@ public class Robot extends IterativeRobot {
     XboxController driverController = new XboxController(1);
     XboxController operatorController = new XboxController(2);
 
+    private boolean buttonPressedLastTime = false;
     private Scheduler scheduler;
     private Drive mDrive;
     private Claw mClaw;
@@ -79,7 +80,8 @@ public class Robot extends IterativeRobot {
         } else {
             mDrive.setHaloDrive();
         }
-
+        
+       
         //changes the solenoid on and off for driveshifter
         if (driverController.getA()) {
             mDrive.setLowGearOn();
