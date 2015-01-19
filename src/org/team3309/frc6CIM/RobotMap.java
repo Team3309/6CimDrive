@@ -9,9 +9,10 @@ public class RobotMap {
     public static final int DRIVE_RIGHT_1 = 4;
     public static final int DRIVE_RIGHT_2 = 5;
     public static final int DRIVE_RIGHT_3 = 6;
-    public static final int DRIVE_STRAFE = 7;
-    public static final int CLAW_RIGHTSIDE = 8;
-    public static final int CLAW_LEFTSIDE = 9;
+    public static final int DRIVE_STRAFE_1 = 7;
+    public static final int DRIVE_STRAFE_2 = 8;
+    public static final int CLAW_RIGHTSIDE = 9;
+    public static final int CLAW_LEFTSIDE = 10;
 
     public static final int DRIVE_ENCODER_LEFT_A = 1;
     public static final int DRIVE_ENCODER_LEFT_B = 2;
